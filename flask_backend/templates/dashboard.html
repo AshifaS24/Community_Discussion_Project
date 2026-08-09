@@ -1,0 +1,875 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+K-DISC — Community Dashboard
+{% endblock %}
+
+
+{% block content %}
+
+
+<!-- =====================================================
+     HERO SECTION
+===================================================== -->
+
+<section class="dashboard-hero tilt-card">
+
+
+    <!-- HERO CONTENT -->
+
+    <div class="dashboard-hero-content">
+
+
+        <div class="hero-badge">
+
+            <span class="hero-badge-dot"></span>
+
+            K-DISC DIGITAL COMMUNITY
+
+        </div>
+
+
+        <h1 class="dashboard-hero-title">
+
+            Ideas become
+
+            <span class="gradient-text">
+                conversations.
+            </span>
+
+            Conversations create
+
+            <span class="outline-text">
+                impact.
+            </span>
+
+        </h1>
+
+
+        <p class="dashboard-hero-description">
+
+            A collaborative space for K-DISC members to discuss ideas,
+            exchange knowledge, explore community insights, and build
+            meaningful solutions together.
+
+        </p>
+
+
+        <div class="dashboard-hero-actions">
+
+
+            <a
+                href="/create_post"
+                class="btn-3d-primary">
+
+                <span class="btn-icon">
+
+                    <i class="bi bi-plus-lg"></i>
+
+                </span>
+
+                Start a Discussion
+
+            </a>
+
+
+            <a
+                href="/view_posts"
+                class="btn-3d-secondary">
+
+                <i class="bi bi-chat-square-text"></i>
+
+                Explore Discussions
+
+                <i class="bi bi-arrow-right"></i>
+
+            </a>
+
+
+        </div>
+
+
+        <!-- SMALL COMMUNITY STATUS -->
+
+        <div class="community-status">
+
+
+            <div class="status-avatars">
+
+
+                <span class="mini-avatar avatar-one">
+                    K
+                </span>
+
+
+                <span class="mini-avatar avatar-two">
+                    D
+                </span>
+
+
+                <span class="mini-avatar avatar-three">
+                    I
+                </span>
+
+
+                <span class="mini-avatar avatar-four">
+                    +
+                </span>
+
+
+            </div>
+
+
+            <div class="status-text">
+
+                <strong>
+                    Growing Knowledge Community
+                </strong>
+
+                <span>
+                    Connect • Discuss • Innovate
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =================================================
+         3D HERO VISUAL
+    ================================================== -->
+
+    <div class="hero-3d-scene">
+
+
+        <!-- GLOW -->
+
+        <div class="scene-glow"></div>
+
+
+
+        <!-- CENTER SPHERE -->
+
+        <div class="knowledge-sphere">
+
+
+            <div class="sphere-ring ring-one"></div>
+
+            <div class="sphere-ring ring-two"></div>
+
+            <div class="sphere-ring ring-three"></div>
+
+
+            <div class="sphere-core">
+
+                <i class="bi bi-chat-dots-fill"></i>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- FLOATING CARDS -->
+
+
+        <div class="floating-info-card card-discussions">
+
+            <div class="floating-card-icon">
+
+                <i class="bi bi-chat-left-text"></i>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    Discussions
+                </span>
+
+                <strong>
+                    {{ total_discussions }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="floating-info-card card-members">
+
+            <div class="floating-card-icon">
+
+                <i class="bi bi-people"></i>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    Members
+                </span>
+
+                <strong>
+                    {{ total_users }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="floating-info-card card-likes">
+
+            <div class="floating-card-icon">
+
+                <i class="bi bi-heart"></i>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    Engagement
+                </span>
+
+                <strong>
+                    {{ total_likes }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- DECORATIVE PARTICLES -->
+
+        <span class="scene-particle particle-one"></span>
+
+        <span class="scene-particle particle-two"></span>
+
+        <span class="scene-particle particle-three"></span>
+
+        <span class="scene-particle particle-four"></span>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     PLATFORM STATISTICS
+===================================================== -->
+
+<section class="dashboard-section">
+
+
+    <div class="section-heading-row">
+
+
+        <div>
+
+            <span class="section-eyebrow">
+
+                COMMUNITY OVERVIEW
+
+            </span>
+
+
+            <h2 class="dashboard-section-title">
+
+                Platform at a glance
+
+            </h2>
+
+        </div>
+
+
+        <a
+            href="/analytics"
+            class="section-link">
+
+            Full Analytics
+
+            <i class="bi bi-arrow-up-right"></i>
+
+        </a>
+
+
+    </div>
+
+
+
+    <div class="dashboard-stats-grid">
+
+
+        <!-- MEMBERS -->
+
+        <div class="dashboard-stat-card tilt-card">
+
+
+            <div class="stat-top">
+
+
+                <div class="stat-3d-icon">
+
+                    <i class="bi bi-people-fill"></i>
+
+                </div>
+
+
+                <span class="stat-trend">
+
+                    Community
+
+                </span>
+
+
+            </div>
+
+
+            <span class="dashboard-stat-number">
+
+                {{ total_users }}
+
+            </span>
+
+
+            <h3>
+                Registered Members
+            </h3>
+
+
+            <p>
+                Members connected through the K-DISC discussion community.
+            </p>
+
+
+            <div class="stat-decoration"></div>
+
+
+        </div>
+
+
+
+        <!-- DISCUSSIONS -->
+
+        <div class="dashboard-stat-card tilt-card">
+
+
+            <div class="stat-top">
+
+
+                <div class="stat-3d-icon icon-purple">
+
+                    <i class="bi bi-chat-square-text-fill"></i>
+
+                </div>
+
+
+                <span class="stat-trend">
+
+                    Knowledge
+
+                </span>
+
+
+            </div>
+
+
+            <span class="dashboard-stat-number">
+
+                {{ total_discussions }}
+
+            </span>
+
+
+            <h3>
+                Active Discussions
+            </h3>
+
+
+            <p>
+                Ideas, questions, and conversations shared by the community.
+            </p>
+
+
+            <div class="stat-decoration"></div>
+
+
+        </div>
+
+
+
+        <!-- LIKES -->
+
+        <div class="dashboard-stat-card tilt-card">
+
+
+            <div class="stat-top">
+
+
+                <div class="stat-3d-icon icon-orange">
+
+                    <i class="bi bi-heart-fill"></i>
+
+                </div>
+
+
+                <span class="stat-trend">
+
+                    Engagement
+
+                </span>
+
+
+            </div>
+
+
+            <span class="dashboard-stat-number">
+
+                {{ total_likes }}
+
+            </span>
+
+
+            <h3>
+                Community Likes
+            </h3>
+
+
+            <p>
+                Positive interactions generated across community discussions.
+            </p>
+
+
+            <div class="stat-decoration"></div>
+
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     EXPLORE PLATFORM
+===================================================== -->
+
+<section class="dashboard-section">
+
+
+    <div class="section-heading-row">
+
+
+        <div>
+
+            <span class="section-eyebrow">
+
+                EXPLORE THE PLATFORM
+
+            </span>
+
+
+            <h2 class="dashboard-section-title">
+
+                Everything you need in one hub
+
+            </h2>
+
+        </div>
+
+
+    </div>
+
+
+
+    <div class="explore-grid">
+
+
+
+        <!-- DISCUSSIONS -->
+
+        <a
+            href="/view_posts"
+            class="explore-card explore-large tilt-card">
+
+
+            <div class="explore-card-number">
+                01
+            </div>
+
+
+            <div class="explore-icon-wrap">
+
+                <i class="bi bi-chat-left-dots"></i>
+
+            </div>
+
+
+            <div class="explore-card-content">
+
+
+                <span class="explore-label">
+                    COMMUNITY
+                </span>
+
+
+                <h3>
+                    Explore Discussions
+                </h3>
+
+
+                <p>
+
+                    Discover conversations, contribute ideas,
+                    share knowledge, and collaborate with members
+                    across the platform.
+
+                </p>
+
+
+                <span class="explore-action">
+
+                    Browse Discussions
+
+                    <i class="bi bi-arrow-right"></i>
+
+                </span>
+
+
+            </div>
+
+
+            <div class="explore-orb"></div>
+
+
+        </a>
+
+
+
+        <!-- DISCOURSE -->
+
+        <a
+            href="/discourse_topics"
+            class="explore-card tilt-card">
+
+
+            <div class="explore-card-number">
+                02
+            </div>
+
+
+            <div class="explore-icon-wrap icon-community">
+
+                <i class="bi bi-globe2"></i>
+
+            </div>
+
+
+            <div class="explore-card-content">
+
+
+                <span class="explore-label">
+                    LIVE COMMUNITY
+                </span>
+
+
+                <h3>
+                    Discourse Topics
+                </h3>
+
+
+                <p>
+
+                    Explore current topics and conversations
+                    from the connected public community forum.
+
+                </p>
+
+
+                <span class="explore-action">
+
+                    View Topics
+
+                    <i class="bi bi-arrow-right"></i>
+
+                </span>
+
+
+            </div>
+
+
+        </a>
+
+
+
+        <!-- AI SUMMARY -->
+
+        <a
+            href="/discourse_summary"
+            class="explore-card ai-explore-card tilt-card">
+
+
+            <div class="ai-card-glow"></div>
+
+
+            <div class="explore-card-number">
+                03
+            </div>
+
+
+            <div class="explore-icon-wrap icon-ai">
+
+                <i class="bi bi-stars"></i>
+
+            </div>
+
+
+            <div class="explore-card-content">
+
+
+                <div class="ai-label-row">
+
+
+                    <span class="explore-label">
+                        ARTIFICIAL INTELLIGENCE
+                    </span>
+
+
+                    <span class="mini-ai-badge">
+                        AI
+                    </span>
+
+
+                </div>
+
+
+                <h3>
+                    AI Topic Summaries
+                </h3>
+
+
+                <p>
+
+                    Read intelligent summaries generated from
+                    complex community discussions and comments.
+
+                </p>
+
+
+                <span class="explore-action">
+
+                    Explore AI Insights
+
+                    <i class="bi bi-arrow-right"></i>
+
+                </span>
+
+
+            </div>
+
+
+        </a>
+
+
+
+        <!-- ANALYTICS -->
+
+        <a
+            href="/analytics"
+            class="explore-card explore-wide tilt-card">
+
+
+            <div class="explore-card-number">
+                04
+            </div>
+
+
+            <div class="explore-icon-wrap icon-analytics">
+
+                <i class="bi bi-bar-chart-line-fill"></i>
+
+            </div>
+
+
+            <div class="explore-card-content">
+
+
+                <span class="explore-label">
+                    PLATFORM INSIGHTS
+                </span>
+
+
+                <h3>
+                    Community Analytics
+                </h3>
+
+
+                <p>
+
+                    Understand member participation, discussions,
+                    comments, and engagement across the platform.
+
+                </p>
+
+
+                <span class="explore-action">
+
+                    View Analytics
+
+                    <i class="bi bi-arrow-right"></i>
+
+                </span>
+
+
+            </div>
+
+
+            <!-- DECORATIVE BARS -->
+
+            <div class="mini-chart-decoration">
+
+                <span style="height: 35%"></span>
+
+                <span style="height: 55%"></span>
+
+                <span style="height: 45%"></span>
+
+                <span style="height: 75%"></span>
+
+                <span style="height: 62%"></span>
+
+                <span style="height: 90%"></span>
+
+            </div>
+
+
+        </a>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     ABOUT K-DISC
+===================================================== -->
+
+<section class="modern-about-section tilt-card">
+
+
+    <div class="about-glow"></div>
+
+
+    <div class="modern-about-content">
+
+
+        <span class="section-eyebrow">
+
+            ABOUT K-DISC
+
+        </span>
+
+
+        <h2>
+
+            Innovation through
+
+            <span class="gradient-text">
+                collaboration.
+            </span>
+
+        </h2>
+
+
+        <p>
+
+            Kerala Development &amp; Innovation Strategic Council
+            works to accelerate Kerala's development through innovation,
+            strategic planning, and cross-sector collaboration between
+            government, industry, academia, and communities.
+
+        </p>
+
+
+        <p>
+
+            This Community Discussion Platform extends that mission into
+            a connected digital space where members can raise questions,
+            share updates, exchange ideas, and build knowledge together.
+
+        </p>
+
+
+        <a
+            href="/create_post"
+            class="about-action">
+
+            Join the Conversation
+
+            <i class="bi bi-arrow-up-right"></i>
+
+        </a>
+
+
+    </div>
+
+
+
+    <div class="modern-about-visual">
+
+
+        <div class="logo-platform">
+
+
+            <div class="logo-ring logo-ring-one"></div>
+
+            <div class="logo-ring logo-ring-two"></div>
+
+
+            <div class="logo-glass-card">
+
+
+                <img
+                    src="{{ url_for('static', filename='images/kdisc-logo.png') }}"
+                    alt="K-DISC logo"
+                >
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+{% endblock %}

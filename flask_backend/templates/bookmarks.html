@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div style="padding:40px 55px;">
+
+    <h1>Saved Discussions</h1>
+
+    {% if saved_posts %}
+
+        {% for post in saved_posts %}
+
+            <div style="
+                margin:15px 0;
+                padding:20px;
+                border-radius:15px;
+                background:white;
+                box-shadow:0 8px 25px rgba(0,0,0,.08);
+            ">
+
+                <a href="/discussion/{{ post[0] }}"
+                   style="
+                       text-decoration:none;
+                       font-size:18px;
+                       font-weight:700;
+                       color:#17344f;
+                   ">
+
+                    {{ post[1] }}
+
+                </a>
+
+                <p>
+                    {{ post[2] }}
+                </p>
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>No saved discussions yet.</p>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

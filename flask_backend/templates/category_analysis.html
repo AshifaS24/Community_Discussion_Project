@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1 class="page-title">Category Analysis</h1>
+    <p class="page-subtitle">Discussions automatically grouped by topic category</p>
+</div>
+
+{% if posts %}
+
+    {% for category, items in posts|groupby(1) %}
+
+    <div class="card-custom mb-4">
+
+        <div class="d-flex align-items-center gap-2 mb-3">
+            <span class="category-tag category-tag-{{ category|lower|replace(' ', '-') }}">{{ category }}</span>
+            <span class="category-count">{{ items|length }} discussion{{ 's' if items|length != 1 else '' }}</span>
+        </div>
+
+        <div class="simple-list">
+            {% for post in items %}
+                <div class="simple-list-item">{{ post[0] }}</div>
+            {% endfor %}
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+{% else %}
+
+    <div class="card-custom">
+        <div class="empty-state">
+            <p>No discussions to analyze yet.</p>
+        </div>
+    </div>
+
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="page-header d-flex justify-content-between align-items-start">
+
+    <div>
+        <h1 class="page-title">Summarized Discussions</h1>
+        <p class="page-subtitle">AI-generated summaries of Discourse discussions with original comments</p>
+    </div>
+
+    <a href="/dashboard" class="btn btn-outline-primary btn-sm">Back to Dashboard</a>
+
+</div>
+
+{% if summaries %}
+
+    {% for item in summaries %}
+
+    <div class="card-custom mb-4">
+
+        <div class="d-flex justify-content-between align-items-start mb-3">
+
+            <div class="d-flex gap-3 align-items-start">
+
+                <div class="topic-rank">{{ loop.index }}</div>
+
+                <div>
+                    <h3 class="post-title mb-1">{{ item.title }}</h3>
+                    <div class="topic-meta">
+                        <span>{{ item.date[:10] }}</span>
+                        <span>&middot;</span>
+                        <span>{{ item.replies }} replies</span>
+                        <span>&middot;</span>
+                        <span>{{ item.views }} views</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <a href="{{ item.url }}" target="_blank" class="btn btn-outline-primary btn-sm">Open Topic</a>
+
+        </div>
+
+        <div class="row g-3">
+
+            <div class="col-md-6">
+
+                <div class="summary-panel">
+                    <span class="analysis-label">AI Summary</span>
+                    <p class="summary-highlight mb-0">{{ item.summary }}</p>
+                </div>
+
+            </div>
+
+            <div class="col-md-6">
+
+                <div class="comments-panel">
+
+                    <span class="analysis-label">Comments ({{ item.replies + 1 }})</span>
+
+                    {% for c in item.comments[:3] %}
+
+                    <div class="comment-row">
+
+                        <div class="comment-avatar">{{ c.username[:2]|upper }}</div>
+
+                        <div class="comment-body">
+                            <div class="comment-header">
+                                <span class="comment-username">{{ c.username }}</span>
+                                {% if c.is_op %}<span class="op-badge">OP</span>{% endif %}
+                            </div>
+                            <p class="comment-text">{{ c.text[:120] }}{% if c.text|length > 120 %}...{% endif %}</p>
+                        </div>
+
+                    </div>
+
+                    {% endfor %}
+
+                    <a href="{{ item.url }}" target="_blank" class="view-all-link">View all {{ item.replies + 1 }} comments →</a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+{% else %}
+
+    <div class="empty-state">
+        <p>No summaries available yet.</p>
+    </div>
+
+{% endif %}
+
+<div class="disclaimer-bar">
+    Summaries are generated using AI and may not cover every detail. Please refer to original discussions for complete context.
+</div>
+
+{% endblock %}

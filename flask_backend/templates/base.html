@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}K-DISC — Community Discussion Platform{% endblock %}</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+
+<div class="toast-notification-container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+            <div class="modern-toast toast-{{ category }}">
+                <div class="toast-icon">
+                    {% if category == "success" %}<i class="bi bi-check-lg"></i>
+                    {% elif category == "error" %}<i class="bi bi-exclamation-lg"></i>
+                    {% else %}<i class="bi bi-info-lg"></i>{% endif %}
+                </div>
+                <div class="toast-message">
+                    <strong>
+                        {% if category == "success" %}Success
+                        {% elif category == "error" %}Something went wrong
+                        {% else %}Notice{% endif %}
+                    </strong>
+                    <span>{{ message }}</span>
+                </div>
+                <button type="button" class="toast-close" onclick="closeToast(this)"><i class="bi bi-x-lg"></i></button>
+                <div class="toast-progress"></div>
+            </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+</div>
+
+<div class="scene-background">
+    <div class="grid-floor"></div>
+    <div class="orb orb-one"></div>
+    <div class="orb orb-two"></div>
+    <div class="orb orb-three"></div>
+    <div class="floating-cube cube-one"></div>
+    <div class="floating-cube cube-two"></div>
+</div>
+
+<div id="pageLoader">
+    <div class="loader-logo">K-<span>DISC</span></div>
+    <div class="loader-line"><span></span></div>
+</div>
+
+<div class="utility-bar">
+    <div class="utility-inner">
+        <div class="utility-brand">
+            <span class="status-dot"></span>
+            Kerala Development &amp; Innovation Strategic Council
+        </div>
+        <div class="utility-links">
+            <a href="https://kdisc.kerala.gov.in/en/" target="_blank" rel="noopener noreferrer">
+                K-DISC
+                <i class="bi bi-box-arrow-up-right"></i>
+            </a>
+            <a href="/profile">
+                <i class="bi bi-person-circle"></i>
+                My Profile
+            </a>
+            {% if session.get("role") == "admin" %}
+
+<a href="/admin">
+    <i class="bi bi-shield-check"></i>
+    Admin
+</a>
+
+{% endif %}
+            <a href="/logout" class="logout-link">
+                <i class="bi bi-box-arrow-right"></i>
+                Logout
+            </a>
+        </div>
+    </div>
+</div>
+
+<header class="main-nav">
+    <div class="main-nav-inner">
+
+        <a href="/home" class="brand">
+            <div class="brand-logo-3d">
+                <span class="brand-k">K</span>
+                <span class="brand-disc">DISC</span>
+            </div>
+            <div class="brand-text">
+                <span class="brand-tagline">Community Discussion Platform</span>
+                <span class="brand-subtitle">Connect • Discuss • Innovate</span>
+            </div>
+        </a>
+
+        <button class="mobile-menu-btn" id="mobileMenuBtn"><i class="bi bi-list"></i></button>
+
+        <nav class="nav-links" id="mainNavigation">
+
+            <a href="/view_posts" class="nav-item {{ 'active' if request.path == '/view_posts' }}">
+                <i class="bi bi-chat-square-text"></i>
+                <span>Discussions</span>
+            </a>
+
+            <a href="/create_post" class="nav-item {{ 'active' if request.path == '/create_post' }}">
+                <i class="bi bi-plus-circle"></i>
+                <span>Create</span>
+            </a>
+
+            <!-- ==================================================
+     ADMIN-ONLY INSIGHTS MENU
+================================================== -->
+
+{% if session.get("role") == "admin" %}
+
+<div class="nav-item dropdown">
+
+    <a
+        class="dropdown-toggle"
+        data-bs-toggle="dropdown"
+        href="#"
+        role="button"
+    >
+
+        <i class="bi bi-bar-chart-line"></i>
+
+        <span>Insights</span>
+
+    </a>
+
+
+    <ul class="dropdown-menu modern-dropdown">
+
+        <!-- ANALYTICS -->
+
+        <li>
+
+            <a
+                class="dropdown-item"
+                href="/analytics"
+            >
+
+                <div class="dropdown-icon">
+                    <i class="bi bi-graph-up-arrow"></i>
+                </div>
+
+                <div>
+                    <strong>Analytics</strong>
+                    <small>Community statistics</small>
+                </div>
+
+            </a>
+
+        </li>
+
+
+        <!-- TOP POSTS -->
+
+        <li>
+
+            <a
+                class="dropdown-item"
+                href="/top_posts"
+            >
+
+                <div class="dropdown-icon">
+                    <i class="bi bi-trophy"></i>
+                </div>
+
+                <div>
+                    <strong>Top Posts</strong>
+                    <small>Most popular discussions</small>
+                </div>
+
+            </a>
+
+        </li>
+
+
+        <!-- ACTIVITY -->
+
+        <li>
+
+            <a
+                class="dropdown-item"
+                href="/activity"
+            >
+
+                <div class="dropdown-icon">
+                    <i class="bi bi-activity"></i>
+                </div>
+
+                <div>
+                    <strong>Activity</strong>
+                    <small>Recent community actions</small>
+                </div>
+
+            </a>
+
+        </li>
+
+    </ul>
+
+</div>
+
+{% endif %}
+
+            <div class="nav-item dropdown">
+                <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button">
+                    <i class="bi bi-people"></i>
+                    <span>Community</span>
+                </a>
+                <ul class="dropdown-menu modern-dropdown community-dropdown">
+                    <li>
+                        <a class="dropdown-item" href="/discourse_topics">
+                            <div class="dropdown-icon"><i class="bi bi-chat-dots"></i></div>
+                            <div><strong>Discourse Topics</strong><small>Explore community topics</small></div>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item ai-menu-item" href="/discourse_summary">
+                            <div class="dropdown-icon ai-icon"><i class="bi bi-stars"></i></div>
+                            <div><strong>AI Summaries</strong><small>AI-powered topic insights</small></div>
+                            <span class="ai-badge">AI</span>
+                        </a>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <a class="dropdown-item" href="https://kcommunity.discourse.group" target="_blank">
+                            <div class="dropdown-icon"><i class="bi bi-box-arrow-up-right"></i></div>
+                            <div><strong>Community Forum</strong><small>Open external forum</small></div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+        </nav>
+    </div>
+</header>
+
+<main class="content">
+    {% block content %}
+    {% endblock %}
+</main>
+
+<footer class="site-footer">
+    <div class="footer-inner">
+        <div class="footer-brand">
+            <strong>K-<span>DISC</span></strong>
+            <p>Building conversations that drive innovation.</p>
+        </div>
+        <div class="footer-info">
+            <span>Community Discussion Platform</span>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+window.addEventListener("load", function () {
+    const loader = document.getElementById("pageLoader");
+    setTimeout(function () { loader.classList.add("loader-hidden"); }, 400);
+});
+
+const mobileButton = document.getElementById("mobileMenuBtn");
+const navigation = document.getElementById("mainNavigation");
+mobileButton.addEventListener("click", function () {
+    navigation.classList.toggle("nav-open");
+});
+
+window.addEventListener("scroll", function () {
+    const navbar = document.querySelector(".main-nav");
+    if (window.scrollY > 20) { navbar.classList.add("nav-scrolled"); }
+    else { navbar.classList.remove("nav-scrolled"); }
+});
+
+document.addEventListener("mousemove", function(event) {
+    document.querySelectorAll(".tilt-card").forEach(function(card) {
+        const rect = card.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+        if (x >= 0 && x <= rect.width && y >= 0 && y <= rect.height) {
+            const rotateX = ((y - rect.height / 2) / rect.height) * -5;
+            const rotateY = ((x - rect.width / 2) / rect.width) * 5;
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+        } else {
+            card.style.transform = "perspective(1000px) rotateX(0) rotateY(0)";
+        }
+    });
+});
+</script>
+
+{% block extra_js %}{% endblock %}
+
+<script>
+function closeToast(button) {
+    const toast = button.closest(".modern-toast");
+    toast.classList.add("toast-hide");
+    setTimeout(() => { toast.remove(); }, 400);
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    const toasts = document.querySelectorAll(".modern-toast");
+    toasts.forEach(function (toast, index) {
+        setTimeout(function () {
+            toast.classList.add("toast-hide");
+            setTimeout(function () { toast.remove(); }, 400);
+        }, 3500 + (index * 400));
+    });
+});
+</script>
+
+</body>
+</html>

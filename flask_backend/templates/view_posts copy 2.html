@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1 class="page-title">Community Discussions</h1>
+    <p class="page-subtitle">Browse, search, and join ongoing conversations</p>
+</div>
+
+<div class="card-custom search-bar mb-4">
+
+    <form method="GET" action="/view_posts" id="searchForm">
+
+        <div class="row g-2">
+
+            <div class="col-md-10 search-input-wrap">
+
+                <input type="text"
+                       name="search"
+                       id="searchInput"
+                       class="form-control"
+                       autocomplete="off"
+                       value="{{ request.args.get('search', '') }}"
+                       placeholder="Search discussions...">
+
+                <div id="suggestionBox" class="suggestion-box"></div>
+
+            </div>
+
+            <div class="col-md-2">
+
+                <button type="submit" class="btn btn-primary w-100">
+                    Search
+                </button>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% if posts %}
+
+    {% for post in posts %}
+
+    <div class="card card-custom mb-3 post-card">
+
+        <div class="card-body">
+
+            <div class="d-flex justify-content-between align-items-start">
+
+                <div>
+
+                    <h3 class="post-title">
+                        <a href="/discussion/{{ post[0] }}">
+                            {{ post[1] }}
+                        </a>
+                    </h3>
+
+                    <p class="post-owner">
+                    {{ post[3] }}
+                    <span class="author-badge author-badge-{{ author_badges[post[3]]|lower }}">{{ author_badges[post[3]] }}</span>
+                    </p>
+
+                </div>
+
+                {% if post[5] == "Solved" %}
+                    <span class="status-pill status-solved">Solved</span>
+                {% else %}
+                    <span class="status-pill status-open">Open</span>
+                {% endif %}
+
+            </div>
+
+            <hr>
+
+            <p class="post-excerpt">
+                {{ post[2][:250] }}...
+            </p>
+
+            <div class="post-meta mb-3">
+                <span class="meta-pill">{{ post[4] }} likes</span>
+            </div>
+
+            <div class="d-flex flex-wrap gap-2">
+
+                <a href="/like/{{ post[0] }}" class="btn btn-primary btn-sm">Like</a>
+                <a href="/recommend/{{ post[0] }}" class="btn btn-outline-primary btn-sm">Recommend</a>
+
+                {% if post[0] in saved_ids %}
+                    <a href="/unbookmark/{{ post[0] }}" class="btn btn-saved btn-sm">Saved ✕</a>
+                {% else %}
+                    <a href="/bookmark/{{ post[0] }}" class="btn btn-outline-primary btn-sm">Save</a>
+                {% endif %}
+
+                <a href="/summary/{{ post[0] }}" class="btn btn-outline-primary btn-sm">AI Summary</a>
+                <a href="/sentiment/{{ post[0] }}" class="btn btn-outline-primary btn-sm">Sentiment</a>
+
+                {% if post[3] == current_user %}
+
+                <a href="/edit_post/{{ post[0] }}" class="btn btn-outline-primary btn-sm">Edit</a>
+                <a href="/delete_post/{{ post[0] }}" class="btn btn-danger-outline btn-sm">Delete</a>
+                <a href="/solve/{{ post[0] }}" class="btn btn-primary btn-sm">Mark Solved</a>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+{% else %}
+
+    <div class="empty-state">
+        <p>No discussions found{% if request.args.get('search') %} for "{{ request.args.get('search') }}"{% endif %}.</p>
+    </div>
+
+{% endif %}
+
+<script>
+const searchInput = document.getElementById('searchInput');
+const suggestionBox = document.getElementById('suggestionBox');
+let debounceTimer;
+
+searchInput.addEventListener('input', function () {
+
+    clearTimeout(debounceTimer);
+    const query = this.value.trim();
+
+    if (!query) {
+        suggestionBox.innerHTML = '';
+        suggestionBox.classList.remove('active');
+        return;
+    }
+
+    debounceTimer = setTimeout(() => {
+
+        fetch('/search_suggestions?q=' + encodeURIComponent(query))
+            .then(res => res.json())
+            .then(data => {
+
+                if (data.length === 0) {
+                    suggestionBox.innerHTML = '';
+                    suggestionBox.classList.remove('active');
+                    return;
+                }
+
+                suggestionBox.innerHTML = data.map(item =>
+                    `<div class="suggestion-item" data-id="${item.id}" data-title="${item.title}">${item.title}</div>`
+                ).join('');
+
+                suggestionBox.classList.add('active');
+
+            });
+
+    }, 200);
+
+});
+
+suggestionBox.addEventListener('click', function (e) {
+
+    const item = e.target.closest('.suggestion-item');
+
+    if (!item) return;
+
+    window.location.href = '/discussion/' + item.dataset.id;
+
+});
+
+document.addEventListener('click', function (e) {
+
+    if (!e.target.closest('.search-input-wrap')) {
+        suggestionBox.classList.remove('active');
+    }
+
+});
+</script>
+
+{% endblock %}

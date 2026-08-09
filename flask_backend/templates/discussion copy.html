@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Discussion</title>
+</head>
+<body>
+
+    <h1>{{ post[1] }}</h1>
+
+    <p>{{ post[2] }}</p>
+
+    <hr>
+
+    <h2>Comments</h2>
+    <h3>Add Comment</h3>
+
+<form method="POST">
+    <textarea name="comment" rows="4" cols="40"></textarea>
+    <br><br>
+
+    <input type="submit" value="Add Comment">
+</form>
+
+<hr>
+
+    {% for comment in comments %}
+        <p>{{ comment[2] }}</p>
+    {% endfor %}
+
+</body>
+</html>

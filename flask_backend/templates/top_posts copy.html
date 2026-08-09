@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Top Discussions</title>
+</head>
+<body>
+
+    <h1>🏆 Top Discussions</h1>
+
+    {% for post in posts %}
+
+        <h3>{{ post[1] }}</h3>
+
+        <p>{{ post[2] }}</p>
+
+        <p>👍 Likes: {{ post[4] }}</p>
+
+        <hr>
+
+    {% endfor %}
+
+</body>
+</html>

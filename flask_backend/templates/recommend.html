@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1 class="page-title">Discussion Recommendations</h1>
+    <p class="page-subtitle">Similar discussions you might be interested in</p>
+</div>
+
+<div class="card-custom mb-4">
+
+    <span class="analysis-label">Current Discussion</span>
+    <h3 class="analysis-title mb-0">{{ post[1] }}</h3>
+
+</div>
+
+<h3 class="section-title mb-3">Recommended Discussions</h3>
+
+{% if recommendations %}
+
+    <div class="recommend-list">
+
+        {% for item in recommendations %}
+
+        <a href="/discussion/{{ item[0] }}" class="recommend-item">
+            <span class="recommend-title">{{ item[1] }}</span>
+            <span class="recommend-arrow">→</span>
+        </a>
+
+        {% endfor %}
+
+    </div>
+
+{% else %}
+
+    <div class="empty-state">
+        <p>No related discussions found.</p>
+    </div>
+
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1 class="page-title">AI Discussion Summary</h1>
+    <p class="page-subtitle">A condensed version of this discussion</p>
+</div>
+
+<div class="card-custom">
+
+    <span class="analysis-label">Original Discussion</span>
+    <p class="analysis-content">{{ content }}</p>
+
+    <hr>
+
+    <span class="analysis-label">AI Summary</span>
+    <p class="analysis-content summary-highlight">{{ summary }}</p>
+
+</div>
+
+{% endblock %}

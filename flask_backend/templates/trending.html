@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1 class="page-title">Trending Topics</h1>
+    <p class="page-subtitle">Discussions gaining the most traction right now</p>
+</div>
+
+{% if posts %}
+
+    {% set max_score = posts[0][2] if posts[0][2] > 0 else 1 %}
+    {% set total_score = posts|sum(attribute=2) %}
+
+    <div class="row g-4 mb-4">
+
+        <div class="col-md-4">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <svg viewBox="0 0 24 24"><path d="M4 20V10M12 20V4M20 20v-7"/></svg>
+                </div>
+                <span class="stat-card-label">Tracked Topics</span>
+                <span class="stat-card-number">{{ posts|length }}</span>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="stat-card">
+                <div class="stat-icon feature-icon-accent">
+                    <svg viewBox="0 0 24 24"><path d="M12 3l2.6 5.6 6.2.8-4.5 4.2 1.2 6.1L12 16.9l-5.5 2.8 1.2-6.1-4.5-4.2 6.2-.8z"/></svg>
+                </div>
+                <span class="stat-card-label">Top Score</span>
+                <span class="stat-card-number">{{ max_score }}</span>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <svg viewBox="0 0 24 24"><path d="M7 10v11H4a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1z"/><path d="M7 10l4-7a2 2 0 0 1 3 1.7L13 10h6a2 2 0 0 1 2 2.3l-1.3 7A2 2 0 0 1 17.7 21H7"/></svg>
+                </div>
+                <span class="stat-card-label">Combined Score</span>
+                <span class="stat-card-number">{{ total_score }}</span>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="trend-grid">
+
+        {% for post in posts %}
+
+        <a href="/discussion/{{ post[0] }}" class="trend-card">
+
+            <div class="trend-card-top">
+
+                <div class="trend-tier trend-tier-{{ 'gold' if loop.index == 1 else 'silver' if loop.index == 2 else 'bronze' if loop.index == 3 else 'default' }}">
+                    #{{ loop.index }}
+                </div>
+
+                <div class="trend-score-badge">{{ post[2] }} pts</div>
+
+            </div>
+
+            <h3 class="trend-card-title">{{ post[1] }}</h3>
+
+            <div class="trend-bar-track">
+                <div class="trend-bar-fill" style="width: {{ (post[2] / max_score * 100)|round(0, 'floor') }}%"></div>
+            </div>
+
+        </a>
+
+        {% endfor %}
+
+    </div>
+
+{% else %}
+
+    <div class="card-custom">
+        <div class="empty-state">
+            <p>No trending topics yet.</p>
+        </div>
+    </div>
+
+{% endif %}
+
+{% endblock %}

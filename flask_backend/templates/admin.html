@@ -1,0 +1,583 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="modern-admin-dashboard">
+
+    <!-- =====================================================
+         PAGE HEADER
+    ====================================================== -->
+
+    <div class="admin-page-header">
+
+        <div>
+            <div class="admin-eyebrow">
+                <i class="bi bi-grid-1x2"></i>
+                ADMIN CONSOLE
+            </div>
+
+            <h1>Dashboard Overview</h1>
+
+            <p>
+                Monitor community activity, engagement and platform performance.
+            </p>
+        </div>
+
+        <div class="admin-live-status">
+            <span class="admin-status-dot"></span>
+            Platform active
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         STATISTICS
+    ====================================================== -->
+
+    <div class="admin-stats-grid">
+
+
+        <!-- USERS -->
+
+        <div class="admin-stat-card">
+
+            <div class="admin-stat-top">
+
+                <div class="admin-stat-icon users-icon">
+                    <i class="bi bi-people"></i>
+                </div>
+
+                <span class="admin-stat-label">
+                    USERS
+                </span>
+
+            </div>
+
+            <div class="admin-stat-number">
+                {{ total_users }}
+            </div>
+
+            <div class="admin-stat-footer">
+                <span>Total members</span>
+
+                <i class="bi bi-arrow-up-right"></i>
+            </div>
+
+        </div>
+
+
+        <!-- DISCUSSIONS -->
+
+        <div class="admin-stat-card">
+
+            <div class="admin-stat-top">
+
+                <div class="admin-stat-icon discussions-icon">
+                    <i class="bi bi-chat-square-text"></i>
+                </div>
+
+                <span class="admin-stat-label">
+                    DISCUSSIONS
+                </span>
+
+            </div>
+
+            <div class="admin-stat-number">
+                {{ total_discussions }}
+            </div>
+
+            <div class="admin-stat-footer">
+                <span>Published topics</span>
+
+                <i class="bi bi-arrow-up-right"></i>
+            </div>
+
+        </div>
+
+
+        <!-- COMMENTS -->
+
+        <div class="admin-stat-card">
+
+            <div class="admin-stat-top">
+
+                <div class="admin-stat-icon comments-icon">
+                    <i class="bi bi-chat-dots"></i>
+                </div>
+
+                <span class="admin-stat-label">
+                    COMMENTS
+                </span>
+
+            </div>
+
+            <div class="admin-stat-number">
+                {{ total_comments }}
+            </div>
+
+            <div class="admin-stat-footer">
+                <span>Community responses</span>
+
+                <i class="bi bi-arrow-up-right"></i>
+            </div>
+
+        </div>
+
+
+        <!-- LIKES -->
+
+        <div class="admin-stat-card">
+
+            <div class="admin-stat-top">
+
+                <div class="admin-stat-icon likes-icon">
+                    <i class="bi bi-heart"></i>
+                </div>
+
+                <span class="admin-stat-label">
+                    LIKES
+                </span>
+
+            </div>
+
+            <div class="admin-stat-number">
+                {{ total_likes }}
+            </div>
+
+            <div class="admin-stat-footer">
+                <span>Total engagement</span>
+
+                <i class="bi bi-arrow-up-right"></i>
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         PLATFORM HIGHLIGHTS
+    ====================================================== -->
+
+    <section class="admin-section">
+
+        <div class="admin-section-heading">
+
+            <div>
+
+                <span class="admin-section-label">
+                    COMMUNITY
+                </span>
+
+                <h2>
+                    Platform Highlights
+                </h2>
+
+            </div>
+
+            <div class="admin-section-icon">
+                <i class="bi bi-stars"></i>
+            </div>
+
+        </div>
+
+
+        <div class="admin-highlights-grid">
+
+
+            <!-- MOST LIKED -->
+
+            <div class="admin-highlight-card">
+
+                <div class="highlight-card-top">
+
+                    <div class="highlight-icon highlight-heart">
+                        <i class="bi bi-heart-fill"></i>
+                    </div>
+
+                    <span class="highlight-badge">
+                        TOP CONTENT
+                    </span>
+
+                </div>
+
+                <span class="highlight-label">
+                    Most Liked Discussion
+                </span>
+
+                <h3>
+                    {% if top_post %}
+                        {{ top_post[0] }}
+                    {% else %}
+                        No discussions yet
+                    {% endif %}
+                </h3>
+
+                <div class="highlight-value">
+
+                    <i class="bi bi-heart-fill"></i>
+
+                    {% if top_post %}
+                        {{ top_post[1] }}
+                    {% else %}
+                        0
+                    {% endif %}
+
+                    <span>likes</span>
+
+                </div>
+
+            </div>
+
+
+            <!-- MOST ACTIVE USER -->
+
+            <div class="admin-highlight-card">
+
+                <div class="highlight-card-top">
+
+                    <div class="highlight-icon highlight-user">
+                        <i class="bi bi-person-check-fill"></i>
+                    </div>
+
+                    <span class="highlight-badge">
+                        TOP MEMBER
+                    </span>
+
+                </div>
+
+                <span class="highlight-label">
+                    Most Active User
+                </span>
+
+                <h3 class="highlight-user-name">
+
+                    {% if most_active_user %}
+                        {{ most_active_user[0] }}
+                    {% else %}
+                        No activity yet
+                    {% endif %}
+
+                </h3>
+
+                <div class="highlight-value">
+
+                    <i class="bi bi-chat-square-text-fill"></i>
+
+                    {% if most_active_user %}
+                        {{ most_active_user[1] }}
+                    {% else %}
+                        0
+                    {% endif %}
+
+                    <span>discussions</span>
+
+                </div>
+
+            </div>
+
+
+            <!-- MOST COMMENTED -->
+
+            <div class="admin-highlight-card">
+
+                <div class="highlight-card-top">
+
+                    <div class="highlight-icon highlight-comment">
+                        <i class="bi bi-chat-dots-fill"></i>
+                    </div>
+
+                    <span class="highlight-badge">
+                        TRENDING
+                    </span>
+
+                </div>
+
+                <span class="highlight-label">
+                    Most Commented Discussion
+                </span>
+
+                <h3>
+
+                    {% if most_commented %}
+                        {{ most_commented[0] }}
+                    {% else %}
+                        No discussions yet
+                    {% endif %}
+
+                </h3>
+
+                <div class="highlight-value">
+
+                    <i class="bi bi-chat-dots-fill"></i>
+
+                    {% if most_commented %}
+                        {{ most_commented[1] }}
+                    {% else %}
+                        0
+                    {% endif %}
+
+                    <span>comments</span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         ANALYTICS
+    ====================================================== -->
+
+    <section class="admin-section admin-analytics-section">
+
+        <div class="admin-section-heading">
+
+            <div>
+
+                <span class="admin-section-label">
+                    ANALYTICS
+                </span>
+
+                <h2>
+                    Discussion Engagement
+                </h2>
+
+                <p>
+                    Likes received across community discussions.
+                </p>
+
+            </div>
+
+
+            <div class="analytics-badge">
+
+                <i class="bi bi-bar-chart-line"></i>
+
+                Likes overview
+
+            </div>
+
+        </div>
+
+
+        <div class="admin-chart-wrapper">
+
+            <canvas id="likesChart"></canvas>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+
+<!-- =====================================================
+     CHART JS
+===================================================== -->
+
+<!-- LOAD CHART.JS FIRST -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<!-- FLASK DATA: DISCUSSION TITLES -->
+<script id="chart-labels-data" type="application/json">
+{{ labels | tojson }}
+</script>
+
+
+<!-- FLASK DATA: LIKE COUNTS -->
+<script id="chart-likes-data" type="application/json">
+{{ likes | tojson }}
+</script>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    // ==========================================
+    // GET ELEMENTS
+    // ==========================================
+
+    const labelsElement =
+        document.getElementById("chart-labels-data");
+
+    const likesElement =
+        document.getElementById("chart-likes-data");
+
+    const chartCanvas =
+        document.getElementById("likesChart");
+
+
+    // ==========================================
+    // SAFETY CHECK
+    // ==========================================
+
+    if (!labelsElement || !likesElement || !chartCanvas) {
+
+        console.error("Chart elements are missing.");
+
+        return;
+    }
+
+
+    // ==========================================
+    // CONVERT FLASK DATA TO JAVASCRIPT
+    // ==========================================
+
+    const labels =
+        JSON.parse(labelsElement.textContent);
+
+    const likes =
+        JSON.parse(likesElement.textContent);
+
+
+    console.log("Discussion labels:", labels);
+    console.log("Discussion likes:", likes);
+
+
+    // ==========================================
+    // CHECK CHART.JS
+    // ==========================================
+
+    if (typeof Chart === "undefined") {
+
+        console.error("Chart.js failed to load.");
+
+        return;
+    }
+
+
+    // ==========================================
+    // CREATE CHART
+    // ==========================================
+
+    new Chart(chartCanvas, {
+
+        type: "bar",
+
+        data: {
+
+            labels: labels,
+
+            datasets: [{
+
+                label: "Likes",
+
+                data: likes,
+
+                backgroundColor:
+                    "rgba(13, 148, 136, 0.75)",
+
+                borderColor:
+                    "rgba(13, 148, 136, 1)",
+
+                borderWidth: 1,
+
+                borderRadius: 8,
+
+                borderSkipped: false,
+
+                maxBarThickness: 48
+
+            }]
+
+        },
+
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            animation: {
+                duration: 900,
+                easing: "easeOutQuart"
+            },
+
+
+            plugins: {
+
+                legend: {
+                    display: false
+                },
+
+                tooltip: {
+
+                    backgroundColor: "#172033",
+
+                    titleColor: "#ffffff",
+
+                    bodyColor: "#ffffff",
+
+                    padding: 12,
+
+                    cornerRadius: 10,
+
+                    displayColors: false
+
+                }
+
+            },
+
+
+            scales: {
+
+                y: {
+
+                    beginAtZero: true,
+
+                    ticks: {
+
+                        precision: 0,
+
+                        stepSize: 1
+
+                    },
+
+                    grid: {
+
+                        color:
+                            "rgba(148, 163, 184, 0.15)"
+
+                    },
+
+                    border: {
+                        display: false
+                    }
+
+                },
+
+
+                x: {
+
+                    grid: {
+                        display: false
+                    },
+
+                    border: {
+                        display: false
+                    }
+
+                }
+
+            }
+
+        }
+
+    });
+
+});
+
+</script>
+
+{% endblock %}

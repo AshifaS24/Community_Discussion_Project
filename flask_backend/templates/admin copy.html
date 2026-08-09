@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <h1>👨‍💼 Admin Dashboard</h1>
+
+    <hr>
+
+    <h3>Total Users: {{ total_users }}</h3>
+
+    <h3>Total Discussions: {{ total_discussions }}</h3>
+
+    <h3>Total Comments: {{ total_comments }}</h3>
+
+    <h3>Total Likes: {{ total_likes }}</h3>
+
+    <hr>
+
+    <h2>⭐ Most Liked Discussion</h2>
+
+    <p>
+    {{ top_post[0] }}
+    (👍 {{ top_post[1] }} Likes)
+    </p>
+    <hr>
+
+    <h2>🔥 Most Active User</h2>
+
+    <p>
+    {{ most_active_user[0] }}
+    ({{ most_active_user[1] }} Discussions)
+    </p>
+    <hr>
+    <hr>
+
+    <h2>💬 Most Commented Discussion</h2>
+
+    <p>
+    {{ most_commented[0] }}
+    ({{ most_commented[1] }} Comments)
+    </p>
+
+<h2>📊 Likes Chart</h2>
+
+<div style="width: 800px; height: 400px;">
+    <canvas id="likesChart"></canvas>
+</div>
+
+<script>
+
+const labels = {{ labels|tojson }};
+const likes = {{ likes|tojson }};
+
+new Chart(
+    document.getElementById('likesChart'),
+    {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Discussion Likes',
+                data: likes,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    }
+);
+
+</script>
+
+</body>
+</html>

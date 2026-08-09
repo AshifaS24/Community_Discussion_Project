@@ -1,0 +1,917 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="auth-page">
+
+    <div class="auth-card">
+
+        <!-- ==========================================
+             HEADER
+        =========================================== -->
+
+        <div class="auth-header">
+
+            <h1>Create Your Account</h1>
+
+            <p>
+                Join K-DISC and start sharing your ideas
+            </p>
+
+        </div>
+
+
+        <!-- ==========================================
+             REGISTRATION ERROR ALERT
+        =========================================== -->
+
+        {% if error %}
+
+        <div class="register-alert"
+             id="registerAlert">
+
+            <div class="register-alert-icon">
+
+                <i class="bi bi-exclamation-circle-fill"></i>
+
+            </div>
+
+            <div class="register-alert-content">
+
+                <strong>
+                    Registration failed
+                </strong>
+
+                <span>
+                    {{ error }}
+                </span>
+
+            </div>
+
+            <button
+                type="button"
+                class="register-alert-close"
+                onclick="document.getElementById('registerAlert').remove()"
+                aria-label="Close">
+
+                &times;
+
+            </button>
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- ==========================================
+             REGISTRATION FORM
+        =========================================== -->
+
+        <form
+            method="POST"
+            action="/register"
+            class="register-form">
+
+
+            <!-- ======================================
+                 NAME
+            ======================================= -->
+
+            <div class="form-group">
+
+                <label for="registerName">
+                    Name
+                </label>
+
+                <input
+                    type="text"
+                    id="registerName"
+                    name="name"
+                    class="auth-input"
+                    placeholder="Enter your name"
+                    value="{{ entered_name | default('') }}"
+                    autocomplete="name"
+                    required
+                >
+
+            </div>
+
+
+            <!-- ======================================
+                 EMAIL
+            ======================================= -->
+
+            <div class="form-group">
+
+                <label for="registerEmail">
+                    Email Address
+                </label>
+
+                <input
+                    type="email"
+                    id="registerEmail"
+                    name="email"
+                    class="auth-input"
+                    placeholder="Enter your email"
+                    value="{{ entered_email | default('') }}"
+                    autocomplete="email"
+                    required
+                >
+
+            </div>
+
+
+            <!-- ======================================
+                 PASSWORD
+            ======================================= -->
+
+            <div class="form-group">
+
+                <label for="registerPassword">
+                    Password
+                </label>
+
+                <div class="password-input-wrapper">
+
+                    <input
+                        type="password"
+                        id="registerPassword"
+                        name="password"
+                        class="auth-input password-input"
+                        placeholder="Create a strong password"
+                        autocomplete="new-password"
+                        required
+                    >
+
+                    <button
+                        type="button"
+                        class="password-toggle-btn"
+                        id="passwordToggle"
+                        onclick="toggleRegisterPassword()"
+                        aria-label="Show password">
+
+                        <i
+                            class="bi bi-eye"
+                            id="passwordToggleIcon">
+                        </i>
+
+                    </button>
+
+                </div>
+
+
+                <!-- PASSWORD REQUIREMENTS -->
+
+                <div class="password-help">
+
+                    <span class="password-help-icon">
+                        <i class="bi bi-shield-check"></i>
+                    </span>
+
+                    <span>
+                        Use 8+ characters with uppercase,
+                        lowercase, number and special character.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- ======================================
+                 CREATE ACCOUNT BUTTON
+            ======================================= -->
+
+            <button
+                type="submit"
+                class="create-account-btn">
+
+                <span>
+                    Create Account
+                </span>
+
+                <i class="bi bi-arrow-right"></i>
+
+            </button>
+
+        </form>
+
+
+        <!-- ==========================================
+             LOGIN LINK
+        =========================================== -->
+
+        <div class="auth-footer">
+
+            <p>
+                Already a member of K-DISC?
+            </p>
+
+            <a
+                href="/login"
+                class="login-btn">
+
+                Login
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<style>
+
+/* ==================================================
+   REGISTER PAGE
+================================================== */
+
+.auth-page {
+
+    min-height: calc(100vh - 75px);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 20px;
+
+    background:
+        radial-gradient(
+            circle at 10% 15%,
+            rgba(20, 184, 166, 0.08),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 90% 80%,
+            rgba(99, 102, 241, 0.06),
+            transparent 30%
+        ),
+        linear-gradient(
+            135deg,
+            #f8fbfa 0%,
+            #eef7f5 100%
+        );
+}
+
+
+/* ==================================================
+   CARD
+================================================== */
+
+.auth-card {
+
+    width: 100%;
+    max-width: 560px;
+
+    background:
+        rgba(255, 255, 255, 0.96);
+
+    padding: 30px 45px;
+
+    border:
+        1px solid #e2ece9;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 20px 55px
+        rgba(0, 70, 65, 0.10);
+
+}
+
+
+/* ==================================================
+   HEADER
+================================================== */
+
+.auth-header {
+
+    text-align: center;
+
+    margin-bottom: 24px;
+
+}
+
+
+.auth-header h1 {
+
+    font-family:
+        Georgia,
+        serif;
+
+    color: #10243e;
+
+    font-size: 32px;
+
+    font-weight: 700;
+
+    margin:
+        5px 0 7px;
+
+}
+
+
+.auth-header p {
+
+    color: #64748b;
+
+    font-size: 15px;
+
+    margin: 0;
+
+}
+
+
+/* ==================================================
+   REGISTRATION ERROR ALERT
+================================================== */
+
+.register-alert {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    width: 100%;
+
+    margin-bottom: 20px;
+
+    padding:
+        13px 15px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #fff7f7,
+            #fff1f2
+        );
+
+    border:
+        1px solid #fecaca;
+
+    border-left:
+        4px solid #ef4444;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 7px 20px
+        rgba(239, 68, 68, 0.08);
+
+    animation:
+        registerAlertEnter
+        0.35s ease;
+
+}
+
+
+.register-alert-icon {
+
+    width: 39px;
+    height: 39px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #fee2e2;
+
+    border-radius: 10px;
+
+    color: #dc2626;
+
+    font-size: 17px;
+
+}
+
+
+.register-alert-content {
+
+    flex: 1;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 2px;
+
+}
+
+
+.register-alert-content strong {
+
+    color: #991b1b;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+}
+
+
+.register-alert-content span {
+
+    color: #b91c1c;
+
+    font-size: 12px;
+
+    line-height: 1.45;
+
+}
+
+
+.register-alert-close {
+
+    padding: 0;
+
+    border: none;
+
+    background: transparent;
+
+    color: #9f6b6b;
+
+    font-size: 23px;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        color 0.2s ease;
+
+}
+
+
+.register-alert-close:hover {
+
+    color: #dc2626;
+
+    transform: scale(1.15);
+
+}
+
+
+@keyframes registerAlertEnter {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(-8px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0);
+
+    }
+
+}
+
+
+/* ==================================================
+   FORM
+================================================== */
+
+.form-group {
+
+    margin-bottom: 17px;
+
+}
+
+
+.form-group label {
+
+    display: block;
+
+    color: #10243e;
+
+    font-size: 14px;
+
+    font-weight: 650;
+
+    margin-bottom: 7px;
+
+}
+
+
+.auth-input {
+
+    width: 100%;
+
+    height: 49px;
+
+    padding:
+        11px 15px;
+
+    border:
+        1px solid #d7e3e0;
+
+    border-radius: 11px;
+
+    color: #172033;
+
+    font-size: 15px;
+
+    background: #fbfdfc;
+
+    box-sizing: border-box;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+
+}
+
+
+.auth-input::placeholder {
+
+    color: #9aa7b2;
+
+}
+
+
+.auth-input:focus {
+
+    outline: none;
+
+    border-color: #13877c;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(19, 135, 124, 0.12);
+
+    background: #ffffff;
+
+}
+
+
+/* ==================================================
+   PASSWORD
+================================================== */
+
+.password-input-wrapper {
+
+    position: relative;
+
+}
+
+
+.password-input {
+
+    padding-right: 52px;
+
+}
+
+
+.password-toggle-btn {
+
+    position: absolute;
+
+    right: 8px;
+
+    top: 50%;
+
+    transform:
+        translateY(-50%);
+
+    width: 37px;
+
+    height: 37px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border: none;
+
+    border-radius: 9px;
+
+    background: transparent;
+
+    color: #73818e;
+
+    font-size: 17px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+
+}
+
+
+.password-toggle-btn:hover {
+
+    background: #eef7f5;
+
+    color: #13877c;
+
+}
+
+
+/* ==================================================
+   PASSWORD HELP
+================================================== */
+
+.password-help {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 7px;
+
+    margin-top: 8px;
+
+    padding:
+        8px 10px;
+
+    background: #f7faf9;
+
+    border:
+        1px solid #e7efed;
+
+    border-radius: 9px;
+
+    color: #718096;
+
+    font-size: 11.5px;
+
+    line-height: 1.45;
+
+}
+
+
+.password-help-icon {
+
+    color: #13877c;
+
+    font-size: 13px;
+
+    flex-shrink: 0;
+
+}
+
+
+/* ==================================================
+   CREATE ACCOUNT BUTTON
+================================================== */
+
+.create-account-btn {
+
+    width: 100%;
+
+    min-height: 49px;
+
+    margin-top: 4px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 9px;
+
+    padding: 12px;
+
+    border: none;
+
+    border-radius: 30px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #13877c,
+            #0d766c
+        );
+
+    color: #ffffff;
+
+    font-size: 15px;
+
+    font-weight: 650;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 18px
+        rgba(19, 135, 124, 0.18);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+
+}
+
+
+.create-account-btn:hover {
+
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 12px 24px
+        rgba(19, 135, 124, 0.23);
+
+}
+
+
+.create-account-btn:active {
+
+    transform:
+        translateY(0);
+
+}
+
+
+/* ==================================================
+   LOGIN
+================================================== */
+
+.auth-footer {
+
+    text-align: center;
+
+    margin-top: 20px;
+
+    padding-top: 17px;
+
+    border-top:
+        1px solid #e7eeee;
+
+}
+
+
+.auth-footer p {
+
+    color: #64748b;
+
+    font-size: 14px;
+
+    margin-bottom: 9px;
+
+}
+
+
+.login-btn {
+
+    display: inline-block;
+
+    padding:
+        8px 28px;
+
+    border:
+        1.5px solid #13877c;
+
+    border-radius: 25px;
+
+    color: #13877c;
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+    font-weight: 650;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+
+}
+
+
+.login-btn:hover {
+
+    background: #13877c;
+
+    color: #ffffff;
+
+    transform:
+        translateY(-1px);
+
+}
+
+
+/* ==================================================
+   MOBILE
+================================================== */
+
+@media (max-width: 600px) {
+
+    .auth-page {
+
+        padding:
+            15px;
+
+    }
+
+
+    .auth-card {
+
+        padding:
+            25px 22px;
+
+        border-radius:
+            16px;
+
+    }
+
+
+    .auth-header h1 {
+
+        font-size:
+            27px;
+
+    }
+
+
+    .register-alert {
+
+        align-items:
+            flex-start;
+
+    }
+
+}
+
+</style>
+
+
+
+<script>
+
+/* ==================================================
+   SHOW / HIDE REGISTRATION PASSWORD
+================================================== */
+
+function toggleRegisterPassword() {
+
+    const password =
+        document.getElementById(
+            "registerPassword"
+        );
+
+    const icon =
+        document.getElementById(
+            "passwordToggleIcon"
+        );
+
+
+    if (password.type === "password") {
+
+        password.type = "text";
+
+        icon.classList.remove(
+            "bi-eye"
+        );
+
+        icon.classList.add(
+            "bi-eye-slash"
+        );
+
+    }
+
+    else {
+
+        password.type = "password";
+
+        icon.classList.remove(
+            "bi-eye-slash"
+        );
+
+        icon.classList.add(
+            "bi-eye"
+        );
+
+    }
+
+}
+
+</script>
+
+
+{% endblock %}

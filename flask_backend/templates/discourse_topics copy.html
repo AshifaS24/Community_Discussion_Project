@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Latest Discourse Topics</title>
+</head>
+<body>
+
+<h1>🌐 Latest Discourse Topics</h1>
+
+<ul>
+
+{% for topic in topics[:10] %}
+
+<li>
+
+<a href="https://meta.discourse.org/t/{{ topic['slug'] }}/{{ topic['id'] }}"
+   target="_blank">
+
+   {{ topic["title"] }}
+
+</a>
+
+<br>
+
+Replies: {{ topic["posts_count"] - 1 }}
+|
+Views: {{ topic["views"] }}
+
+</li>
+
+<br>
+
+{% endfor %}
+
+</ul>
+
+</body>
+</html>

@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="hero-card">
+
+    <div class="hero-graphic">
+        <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="320" cy="80" r="70" fill="#1B2A4A" opacity="0.06"/>
+            <circle cx="80" cy="320" r="90" fill="#F2994A" opacity="0.08"/>
+
+            <g stroke="#0F7A6E" stroke-width="1.5" opacity="0.35" fill="none">
+                <line x1="280" y1="120" x2="200" y2="180"/>
+                <line x1="200" y1="180" x2="240" y2="260"/>
+                <line x1="200" y1="180" x2="120" y2="200"/>
+                <line x1="240" y1="260" x2="180" y2="320"/>
+                <line x1="120" y1="200" x2="180" y2="320"/>
+            </g>
+
+            <circle cx="280" cy="120" r="6" fill="#D4A017"/>
+            <circle cx="200" cy="180" r="9" fill="#0F7A6E"/>
+            <circle cx="120" cy="200" r="5" fill="#F2994A"/>
+            <circle cx="240" cy="260" r="7" fill="#1B2A4A"/>
+            <circle cx="180" cy="320" r="6" fill="#F2994A"/>
+
+            <g transform="translate(300,255)">
+                <path d="M-30 -20 h60 a8 8 0 0 1 8 8 v28 a8 8 0 0 1 -8 8 h-38 l-14 14 v-14 h-8 a8 8 0 0 1 -8 -8 v-28 a8 8 0 0 1 8 -8 z"
+                      fill="none" stroke="#0F7A6E" stroke-width="2"/>
+                <circle cx="-8" cy="2" r="2.5" fill="#0F7A6E"/>
+                <circle cx="4" cy="2" r="2.5" fill="#0F7A6E"/>
+                <circle cx="16" cy="2" r="2.5" fill="#0F7A6E"/>
+            </g>
+
+            <g transform="translate(120,110)" opacity="0.85">
+                <path d="M-20 -14 h40 a6 6 0 0 1 6 6 v18 a6 6 0 0 1 -6 6 h-26 l-10 10 v-10 h-4 a6 6 0 0 1 -6 -6 v-18 a6 6 0 0 1 6 -6 z"
+                      fill="none" stroke="#F2994A" stroke-width="2"/>
+            </g>
+        </svg>
+    </div>
+
+    <span class="hero-kicker">K-DISC · Internal Platform</span>
+
+    <h1 class="hero-title">
+        <span class="hero-title-line1">Communication &amp;</span>
+        <span class="hero-title-line2">Discussion Hub</span>
+    </h1>
+
+    <p class="hero-text">
+        Where K-DISC members talk through ideas, ask questions, and keep every conversation, decision, and update in one place.
+    </p>
+
+    <div class="hero-actions">
+        <a href="/create_post" class="btn btn-primary">Start a Discussion</a>
+        <a href="/view_posts" class="btn btn-outline-primary">Browse Discussions</a>
+    </div>
+
+</div>
+
+<div class="row g-4">
+
+    <div class="col-md-4">
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                <svg viewBox="0 0 24 24"><path d="M6 4h9l3 3v13H6z"/><path d="M9 9h6M9 13h6M9 17h4"/></svg>
+            </div>
+
+            <h3 class="feature-title">Discussions</h3>
+
+            <p class="feature-text">Start a new thread or catch up on ongoing conversations.</p>
+
+            <a href="/view_posts" class="btn btn-primary">
+                View Discussions
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="feature-card">
+
+            <div class="feature-icon feature-icon-accent">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 2.5 15.5 0 18M12 3c-2.5 2.5-2.5 15.5 0 18"/></svg>
+            </div>
+
+            <h3 class="feature-title">Discourse Topics</h3>
+
+            <p class="feature-text">Browse live topics synced from the public community forum.</p>
+
+            <a href="/discourse_topics" class="btn btn-outline-primary">
+                Open Topics
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                <svg viewBox="0 0 24 24"><path d="M4 20V10M12 20V4M20 20v-7"/></svg>
+            </div>
+
+            <h3 class="feature-title">Analytics</h3>
+
+            <p class="feature-text">See engagement trends and activity across the platform.</p>
+
+            <a href="/analytics" class="btn btn-primary">
+                View Analytics
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="about-card">
+
+    <div class="about-text">
+
+        <span class="hero-kicker">About K-DISC</span>
+
+        <h2 class="about-title">Kerala Development &amp; Innovation Strategic Council</h2>
+
+        <p class="about-body">
+            K-DISC works to accelerate Kerala's development through innovation, strategic planning, and cross-sector collaboration between government, industry, and academia. This Community Discussion Platform extends that mission into a shared digital space — a place for members to raise questions, share updates, and work through ideas together in one connected hub.
+        </p>
+
+    </div>
+
+    <div class="about-logo">
+        <img src="{{ url_for('static', filename='images/kdisc-logo.png') }}" alt="K-DISC logo">
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Recommendations</title>
+</head>
+<body>
+
+    <h1>Discussion Recommendations</h1>
+
+    <h2>Current Discussion</h2>
+
+    <p>{{ post[1] }}</p>
+
+    <h2>Recommended Discussions</h2>
+
+    {% for item in recommendations %}
+
+        <p>{{ item[1] }}</p>
+
+    {% endfor %}
+
+</body>
+</html>

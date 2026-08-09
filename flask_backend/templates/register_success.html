@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="success-page">
+
+    <div class="success-card">
+
+        <div class="success-icon">
+            ✓
+        </div>
+
+        <h1>Registration Successful!</h1>
+
+        <p class="success-message">
+            Welcome to K-DISC
+        </p>
+
+        <p class="success-description">
+            Your account has been created successfully.
+            You can now log in and start joining community discussions.
+        </p>
+
+        <a href="/login" class="login-now-btn">
+            Continue to Login
+        </a>
+
+        <a href="/" class="home-link">
+            ← Back to Home
+        </a>
+
+    </div>
+
+</div>
+
+
+<style>
+
+.success-page {
+    min-height: calc(100vh - 80px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 20px;
+
+    background: linear-gradient(
+        135deg,
+        #f8fbfa 0%,
+        #eef7f5 100%
+    );
+}
+
+
+.success-card {
+    width: 100%;
+    max-width: 580px;
+
+    background: white;
+
+    padding: 50px 45px;
+
+    text-align: center;
+
+    border: 1px solid #e2ece9;
+    border-radius: 18px;
+
+    box-shadow:
+        0 15px 45px rgba(0, 80, 70, 0.10);
+}
+
+
+.success-icon {
+    width: 80px;
+    height: 80px;
+
+    margin: 0 auto 25px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 50%;
+
+    background: #e9f7f4;
+
+    color: #13877c;
+
+    font-size: 42px;
+    font-weight: bold;
+}
+
+
+.success-card h1 {
+    font-family: Georgia, serif;
+
+    color: #10243e;
+
+    font-size: 38px;
+    font-weight: 700;
+
+    margin-bottom: 15px;
+}
+
+
+.success-message {
+    color: #13877c;
+
+    font-size: 20px;
+    font-weight: 600;
+
+    margin-bottom: 15px;
+}
+
+
+.success-description {
+    color: #64748b;
+
+    font-size: 16px;
+    line-height: 1.7;
+
+    max-width: 440px;
+
+    margin: 0 auto 30px;
+}
+
+
+.login-now-btn {
+    display: block;
+
+    width: 100%;
+
+    padding: 14px;
+
+    background: #13877c;
+
+    color: white;
+
+    border-radius: 30px;
+
+    text-decoration: none;
+
+    font-size: 17px;
+    font-weight: 600;
+
+    transition: 0.2s;
+}
+
+
+.login-now-btn:hover {
+    background: #0f7168;
+
+    color: white;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 8px 20px rgba(19, 135, 124, 0.20);
+}
+
+
+.home-link {
+    display: inline-block;
+
+    margin-top: 22px;
+
+    color: #f28c45;
+
+    text-decoration: none;
+
+    font-weight: 600;
+}
+
+
+.home-link:hover {
+    text-decoration: underline;
+}
+
+
+@media (max-width: 600px) {
+
+    .success-card {
+        padding: 35px 25px;
+    }
+
+    .success-card h1 {
+        font-size: 30px;
+    }
+
+}
+
+</style>
+
+{% endblock %}

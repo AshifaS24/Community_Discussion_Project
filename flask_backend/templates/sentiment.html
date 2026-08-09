@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1 class="page-title">AI Sentiment Analysis</h1>
+    <p class="page-subtitle">Automated tone detection for this discussion</p>
+</div>
+
+<div class="card-custom">
+
+    <span class="analysis-label">Discussion</span>
+    <h3 class="analysis-title">{{ title }}</h3>
+
+    <p class="analysis-content">{{ content }}</p>
+
+    <hr>
+
+    <span class="analysis-label">Result</span>
+
+    <div class="sentiment-result sentiment-{{ sentiment_type }}">
+        {{ result }}
+    </div>
+
+</div>
+
+{% endblock %}

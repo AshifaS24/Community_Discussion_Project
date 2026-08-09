@@ -1,0 +1,210 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1 class="page-title">🌐 Latest Discourse Topics</h1>
+
+<div class="card card-custom p-4">
+
+    <h3>Live Topics from K Community</h3>
+
+    <p class="text-muted">
+        Topics, original posts, and replies fetched from the Discourse community.
+    </p>
+
+    <hr>
+
+    {% for topic in topics[:10] %}
+
+    <div class="card mb-4 border-0 shadow-sm discourse-card">
+
+        <div class="card-body">
+
+            <!-- TOPIC HEADER -->
+
+            <div class="d-flex justify-content-between align-items-start">
+
+                <div>
+
+                    <h4>
+                        <a href="https://kcommunity.discourse.group/t/{{ topic['slug'] }}/{{ topic['id'] }}"
+                           target="_blank">
+
+                            {{ topic["title"] }}
+
+                        </a>
+                    </h4>
+
+                    <small class="text-muted">
+                        Created: {{ topic["created_at"][:10] }}
+                    </small>
+
+                </div>
+
+
+                <div>
+
+                    <a href="https://kcommunity.discourse.group/t/{{ topic['slug'] }}/{{ topic['id'] }}"
+                       target="_blank"
+                       class="btn btn-primary btn-sm">
+
+                        Open Topic
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <hr>
+
+
+            <!-- TOPIC STATISTICS -->
+
+            <div class="row text-center">
+
+                <div class="col-md-4">
+
+                    <div class="alert alert-primary">
+
+                        💬 Replies<br>
+
+                        <strong>
+                           {{ (topic["comments"] | length) - 1 }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-4">
+
+                    <div class="alert alert-success">
+
+                        👁 Views<br>
+
+                        <strong>
+                            {{ topic["views"] }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-4">
+
+                    <div class="alert alert-warning">
+
+                        🌐 Source<br>
+
+                        <strong>
+                            K Community
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- DISCUSSION CONTENT -->
+
+            <div class="discussion-section">
+
+                <h5 class="discussion-heading">
+                    💬 Discussion & Replies
+                </h5>
+
+
+                {% for comment in topic["comments"] %}
+
+                <div class="reply-card">
+
+                    <div class="reply-header">
+
+                        <strong>
+                            👤 {{ comment["username"] }}
+                        </strong>
+
+                        <span>
+                            {{ comment["date"][:10] }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="reply-text">
+
+                        {{ comment["text"] }}
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+
+<style>
+
+.discourse-card {
+    border-radius: 14px;
+}
+
+.discussion-section {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid #dfe9e6;
+}
+
+.discussion-heading {
+    color: #087d70;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.reply-card {
+    background: #f7fbfa;
+    border-left: 4px solid #13877c;
+    border-radius: 8px;
+    padding: 16px 18px;
+    margin-bottom: 14px;
+}
+
+.reply-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.reply-header strong {
+    color: #087d70;
+}
+
+.reply-header span {
+    color: #718096;
+    font-size: 13px;
+}
+
+.reply-text {
+    color: #334155;
+    line-height: 1.7;
+}
+
+</style>
+
+{% endblock %}

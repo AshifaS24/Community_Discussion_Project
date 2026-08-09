@@ -1,0 +1,825 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<!-- =====================================================
+     DISCUSSION PAGE
+===================================================== -->
+
+<div class="discussion-detail-page">
+
+
+    <!-- BACK LINK -->
+
+    <a href="/view_posts"
+       class="discussion-back-link">
+
+        <span>←</span>
+        Back to Discussions
+
+    </a>
+
+
+
+    <!-- =================================================
+         MAIN DISCUSSION CARD
+    ================================================== -->
+
+    <section class="discussion-hero-card">
+
+
+        <!-- DECORATIVE 3D ELEMENTS -->
+
+        <div class="discussion-orb discussion-orb-one"></div>
+        <div class="discussion-orb discussion-orb-two"></div>
+
+
+        <!-- TOP META -->
+
+        <div class="discussion-hero-top">
+
+
+            <div class="discussion-topic-identity">
+
+                <div class="discussion-topic-icon">
+                    {{ post[1][0]|upper }}
+                </div>
+
+
+                <div>
+
+                    <span class="discussion-label">
+                        COMMUNITY DISCUSSION
+                    </span>
+
+                    <p class="discussion-author-line">
+
+                        Started by
+
+                        <strong>
+                            {{ post[3] }}
+                        </strong>
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            {% if post[5] == "Solved" %}
+
+                <span class="discussion-status discussion-status-solved">
+                    ✓ SOLVED
+                </span>
+
+            {% else %}
+
+                <span class="discussion-status discussion-status-open">
+                    ● OPEN
+                </span>
+
+            {% endif %}
+
+
+        </div>
+
+
+
+        <!-- TITLE -->
+
+        <div class="discussion-title-area">
+
+            <h1>
+                {{ post[1] }}
+            </h1>
+
+            <p>
+                {{ post[2] }}
+            </p>
+
+        </div>
+
+
+
+        <!-- BOTTOM META -->
+
+        <div class="discussion-hero-footer">
+
+
+            <div class="discussion-stat">
+
+                <span class="discussion-stat-icon">
+                    ♡
+                </span>
+
+                <span>
+                    {{ post[4] }} Likes
+                </span>
+
+            </div>
+
+
+            <div class="discussion-stat">
+
+                <span class="discussion-stat-icon">
+                    ◌
+                </span>
+
+                <span>
+                    {{ comments|length }} Replies
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+</section>
+
+
+<!-- DOWNLOAD COMMENTS BUTTON -->
+
+<div class="download-comments-wrapper">
+
+    <a href="/discussion/{{ post[0] }}/download_comments"
+       class="download-comments-btn">
+
+        <i class="bi bi-download"></i>
+
+        Download Comments
+
+    </a>
+
+</div>
+
+
+<!-- =================================================
+     CONVERSATION HEADER
+================================================== -->
+
+<section class="conversation-section"
+         id="conversation">
+
+
+
+        <!-- =================================================
+             COMMENTS
+        ================================================== -->
+
+       <div class="discussion-thread">
+
+    {% if comments %}
+
+ {% for comment in comments %}
+
+<article class="reply-card" id="comment-{{ comment[0] }}">
+
+    <div class="reply-avatar">
+        {{ comment[3][0]|upper }}
+    </div>
+
+    <div class="reply-body">
+
+        <div class="reply-card-header">
+
+            <div class="reply-user">
+
+               <div class="reply-user-name">
+    {% if comment[3] %}
+        {{ comment[3] }}
+    {% else %}
+        Community Member
+    {% endif %}
+</div>
+
+                <span class="reply-member-badge">
+                    MEMBER
+                </span>
+
+            </div>
+
+            <span class="reply-index">
+                #{{ loop.index }}
+            </span>
+
+        </div>
+
+        <p class="reply-message">
+            {{ comment[2] }}
+        </p>
+
+     <div class="vote-actions">
+
+    <!-- UPVOTE -->
+
+<button
+    type="button"
+    class="vote-btn upvote-btn"
+    id="upvote-btn-{{ comment[0] }}"
+    data-comment-id="{{ comment[0] }}"
+    onclick="voteComment(this.dataset.commentId, 1)">
+
+    <span class="vote-emoji">👍</span>
+
+    <span id="upvote-count-{{ comment[0] }}">
+        {{ comment_votes.get(comment[0], {}).get('upvotes', 0) }}
+    </span>
+
+</button>
+
+
+    <!-- DOWNVOTE -->
+
+  <button
+    type="button"
+    class="vote-btn downvote-btn"
+    id="downvote-btn-{{ comment[0] }}"
+    data-comment-id="{{ comment[0] }}"
+    onclick="voteComment(this.dataset.commentId, -1)">
+
+    <span class="vote-emoji">👎</span>
+
+    <span id="downvote-count-{{ comment[0] }}">
+        {{ comment_votes.get(comment[0], {}).get('downvotes', 0) }}
+    </span>
+
+</button>
+
+
+   <!-- =====================================================
+     REPLY BUTTON
+===================================================== -->
+
+<button
+    type="button"
+    class="reply-btn-modern"
+    data-comment-id="{{ comment[0] }}"
+    onclick="showReplyBox(this.dataset.commentId)">
+
+    <span class="reply-icon-modern">
+
+        <svg
+            viewBox="0 0 24 24"
+            width="18"
+            height="18"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+
+            <path d="M9 17l-5-5 5-5"></path>
+            <path d="M4 12h10a6 6 0 0 1 6 6v1"></path>
+
+        </svg>
+
+    </span>
+
+    <span>Reply</span>
+
+</button>
+
+</div>
+
+
+<!-- =====================================================
+     COMPACT REPLY FORM
+===================================================== -->
+
+<div
+    class="reply-form-container"
+    id="reply-form-{{ comment[0] }}"
+    style="display:none;">
+
+    <form
+        method="POST"
+        class="compact-reply-form">
+
+        <input
+            type="hidden"
+            name="parent_comment_id"
+            value="{{ comment[0] }}">
+
+
+        <textarea
+            name="comment"
+            class="compact-reply-input"
+            rows="1"
+            placeholder="Add a reply..."
+            required></textarea>
+
+
+        <div class="compact-reply-actions">
+
+            <button
+                type="button"
+                class="compact-cancel-btn"
+                data-comment-id="{{ comment[0] }}"
+                onclick="
+                    document.getElementById(
+                        'reply-form-' + this.dataset.commentId
+                    ).style.display='none'
+                ">
+
+                Cancel
+
+            </button>
+
+
+            <button
+                type="submit"
+                class="compact-submit-btn">
+
+                Reply
+
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+
+<!-- =====================================================
+     SHOW NESTED REPLIES
+===================================================== -->
+
+{% for reply in replies %}
+
+    {% if reply[4] == comment[0] %}
+
+        <div
+            class="modern-nested-reply"
+            id="reply-{{ reply[0] }}">
+
+
+            <!-- USER AVATAR -->
+
+            <div class="nested-reply-avatar">
+
+                {% if reply[3] %}
+
+                    {{ reply[3][0]|upper }}
+
+                {% else %}
+
+                    C
+
+                {% endif %}
+
+            </div>
+
+
+
+            <!-- REPLY CONTENT -->
+
+            <div class="nested-reply-content">
+
+
+                <!-- TOP ROW -->
+
+                <div class="nested-reply-top">
+
+
+                    <div class="nested-reply-user">
+
+
+                        <!-- USER NAME -->
+
+                        <span class="nested-reply-name">
+
+                            {% if reply[3] %}
+
+                                {{ reply[3] }}
+
+                            {% else %}
+
+                                Community Member
+
+                            {% endif %}
+
+                        </span>
+
+
+                        <!-- SMALL REPLY BADGE -->
+
+                        <span class="nested-reply-badge">
+
+                            REPLY
+
+                        </span>
+
+
+                    </div>
+
+
+
+                    <!-- =====================================
+                         DELETE BUTTON
+                         ONLY OWNER CAN SEE THIS
+                    ====================================== -->
+
+                    {% if current_user == reply[5] %}
+
+                        <a
+                            href="{{ url_for('delete_reply', reply_id=reply[0]) }}"
+                            class="nested-delete-btn"
+                            title="Delete reply"
+                            aria-label="Delete reply"
+                            onclick="return confirm('Delete this reply?');">
+
+
+                            <!-- PROFESSIONAL DELETE SVG -->
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                width="16"
+                                height="16"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round">
+
+                                <path d="M3 6h18"></path>
+
+                                <path d="M8 6V4h8v2"></path>
+
+                                <path d="M19 6l-1 14H6L5 6"></path>
+
+                                <path d="M10 11v5"></path>
+
+                                <path d="M14 11v5"></path>
+
+                            </svg>
+
+                        </a>
+
+                    {% endif %}
+
+
+                </div>
+
+
+
+                <!-- =====================================
+                     REPLY MESSAGE
+                ====================================== -->
+
+                <div class="nested-reply-message">
+
+                    {{ reply[2] }}
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    {% endif %}
+
+{% endfor %}
+
+
+
+<!-- =====================================================
+     CLOSE MAIN COMMENT
+===================================================== -->
+
+</div>
+
+</article>
+
+{% endfor %}
+
+
+
+<!-- =====================================================
+     NO COMMENTS
+===================================================== -->
+
+{% else %}
+
+    <div class="discussion-empty-state">
+
+        <div class="empty-state-icon">
+            💬
+        </div>
+
+        <h3>
+            Start the conversation
+        </h3>
+
+        <p>
+            No replies have been posted yet.
+            Share your thoughts and become the first
+            member to join this discussion.
+        </p>
+
+    </div>
+
+{% endif %}
+
+
+</div>
+
+</section>
+
+
+    <!-- =================================================
+         ADD COMMENT FORM
+    ================================================== -->
+
+    <section class="reply-form-card">
+
+
+        <div class="reply-form-decoration"></div>
+
+
+        <div class="reply-form-header">
+
+
+            <div class="reply-form-icon">
+                ✦
+            </div>
+
+
+            <div>
+
+                <span class="conversation-kicker">
+                    JOIN THE DISCUSSION
+                </span>
+
+                <h2>
+                    Share your perspective
+                </h2>
+
+                <p>
+                    Add your idea, suggestion, or response
+                    to the community conversation.
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+
+        <form method="POST"
+              class="modern-reply-form">
+
+
+            <div class="reply-textarea-wrap">
+
+
+                <textarea
+                    name="comment"
+                    id="commentInput"
+                    rows="5"
+                    maxlength="1000"
+                    placeholder="Write your response here..."
+                    required></textarea>
+
+
+                <div class="textarea-footer">
+
+
+                    <span class="writing-hint">
+                        Be clear, respectful and constructive.
+                    </span>
+
+
+                    <span id="characterCount">
+                        0 / 1000
+                    </span>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <div class="reply-form-actions">
+
+
+                <span class="posting-as">
+
+                    Posting as
+
+                    <strong>
+                        {{ current_user }}
+                    </strong>
+
+                </span>
+
+
+                <button type="submit"
+                        class="modern-post-button">
+
+                    <span>
+                        Post Reply
+                    </span>
+
+                    <span class="post-arrow">
+                        →
+                    </span>
+
+                </button>
+
+
+            </div>
+
+
+        </form>
+
+
+    </section>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     CHARACTER COUNTER
+===================================================== -->
+
+<script>
+
+const commentInput =
+    document.getElementById("commentInput");
+
+const characterCount =
+    document.getElementById("characterCount");
+
+
+if (commentInput && characterCount) {
+
+    commentInput.addEventListener(
+        "input",
+        function () {
+
+            characterCount.textContent =
+                this.value.length + " / 1000";
+
+        }
+    );
+
+}
+
+// =============================
+// Vote Button Animation
+// =============================
+
+document.querySelectorAll(".vote-link").forEach(button => {
+
+    button.addEventListener("click", function(e){
+
+        e.preventDefault();
+
+        const icon = this.querySelector(".vote-icon");
+
+        icon.classList.add("pop");
+
+        setTimeout(() => {
+
+            window.location = this.href;
+
+        }, 300);
+
+    });
+
+});
+function showReplyBox(commentId){
+
+    // Hide every reply form
+    document.querySelectorAll(".reply-form-container").forEach(box=>{
+        box.style.display="none";
+    });
+
+    // Show selected reply form
+    document.getElementById("reply-form-"+commentId).style.display="block";
+}
+// =====================================================
+// REMEMBER SCROLL POSITION AFTER PAGE REFRESH
+// =====================================================
+
+// Save current scroll position
+window.addEventListener("beforeunload", function () {
+    sessionStorage.setItem(
+        "discussionScrollPosition",
+        window.scrollY
+    );
+});
+
+// Restore scroll position
+window.addEventListener("load", function () {
+
+    const savedPosition =
+        sessionStorage.getItem("discussionScrollPosition");
+
+    if (savedPosition !== null) {
+
+        window.scrollTo({
+            top: parseInt(savedPosition),
+            behavior: "instant"
+        });
+
+    }
+
+});
+
+// =====================================================
+// AJAX COMMENT VOTING - NO PAGE RELOAD
+// =====================================================
+async function voteComment(commentId, vote) {
+
+    const upButton = document.getElementById("upvote-btn-" + commentId);
+    const downButton = document.getElementById("downvote-btn-" + commentId);
+
+    const upCount = document.getElementById("upvote-count-" + commentId);
+    const downCount = document.getElementById("downvote-count-" + commentId);
+
+    try {
+
+        const response = await fetch(
+            `/comment_vote/${commentId}/${vote}`,
+            {
+                method: "POST",
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest"
+                }
+            }
+        );
+
+        const data = await response.json();
+
+        console.log("Vote response:", data);
+
+        if (!data.success) {
+            console.log("Vote failed:", data.message);
+            return;
+        }
+
+        // Update numbers
+        upCount.textContent = data.upvotes;
+        downCount.textContent = data.downvotes;
+
+        // Remove previous selected state
+        upButton.classList.remove("vote-selected");
+        downButton.classList.remove("vote-selected");
+
+        // Current vote is UPVOTE
+        if (data.user_vote === 1) {
+
+            upButton.classList.add("vote-selected");
+
+            upButton.animate(
+                [
+                    { transform: "scale(1)" },
+                    { transform: "scale(1.30) rotate(-8deg)" },
+                    { transform: "scale(1)" }
+                ],
+                {
+                    duration: 350
+                }
+            );
+        }
+
+        // Current vote is DOWNVOTE
+        else if (data.user_vote === -1) {
+
+            downButton.classList.add("vote-selected");
+
+            downButton.animate(
+                [
+                    { transform: "scale(1)" },
+                    { transform: "scale(1.30) rotate(8deg)" },
+                    { transform: "scale(1)" }
+                ],
+                {
+                    duration: 350
+                }
+            );
+        }
+
+    } catch (error) {
+
+        console.error("Voting error:", error);
+
+    }
+}
+
+</script>
+
+
+{% endblock %}

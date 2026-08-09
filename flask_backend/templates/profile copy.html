@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Profile</title>
+</head>
+<body>
+
+    <h1>User Profile</h1>
+
+    <p>Email: {{ email }}</p>
+    <h3>Badge: {{ badge }} </h3>
+    <p>👍 Total Likes Received: {{ total_likes }}</p>
+
+    <p>💬 Total Comments Received: {{ total_comments }}</p>
+
+    <p>⭐ Reputation: {{ reputation }}</p>
+    <p>Total Likes Received: {{ total_likes }}</p>
+
+    <h2>My Discussions</h2>
+
+    <ul>
+        {% for post in posts %}
+            <li>{{ post[1] }}</li>
+        {% endfor %}
+    </ul>
+    <hr>
+
+    <h2>⭐ Saved Discussions</h2>
+
+    {% for post in saved_posts %}
+
+    <p>{{ post[1] }}</p>
+
+    {% endfor %}
+
+</body>
+</html>

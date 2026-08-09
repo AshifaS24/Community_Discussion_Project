@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1 class="page-title">Top Discussions</h1>
+    <p class="page-subtitle">Discussions ranked by community likes</p>
+</div>
+
+<div class="card-custom">
+
+    {% if posts %}
+
+        <div class="rank-list">
+
+        {% for post in posts %}
+
+        <div class="rank-item">
+
+            <div class="rank-badge rank-{{ loop.index if loop.index <= 3 else 'default' }}">
+                #{{ loop.index }}
+            </div>
+
+            <div class="rank-body">
+
+                <a href="/discussion/{{ post[0] }}" class="rank-title">
+                    {{ post[1] }}
+                </a>
+
+                <p class="rank-excerpt">{{ post[2][:150] }}...</p>
+
+                <span class="meta-pill">{{ post[4] }} likes</span>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="empty-state">
+            <p>No discussions yet.</p>
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

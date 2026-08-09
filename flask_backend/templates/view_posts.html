@@ -1,0 +1,1051 @@
+{% extends "base.html" %}
+
+{% block title %}
+Community Discussions — K-DISC
+{% endblock %}
+
+{% block content %}
+
+
+<!-- =====================================================
+     DISCUSSION PAGE HEADER
+===================================================== -->
+
+<section class="discussion-page-header">
+
+    <div>
+
+        <div class="discussion-header-badge">
+            <span class="discussion-live-dot"></span>
+            COMMUNITY KNOWLEDGE HUB
+        </div>
+
+        <h1 class="discussion-page-title">
+            Explore ideas.
+            <span>Join conversations.</span>
+        </h1>
+
+        <p class="discussion-page-description">
+            Discover community discussions, share your perspective,
+            and collaborate with members across the K-DISC platform.
+        </p>
+
+    </div>
+
+
+    <div class="discussion-header-actions">
+
+        <a href="/create_post" class="discussion-create-btn">
+            <span>
+                <i class="bi bi-plus-lg"></i>
+            </span>
+
+            Start Discussion
+        </a>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     SEARCH AREA
+===================================================== -->
+
+<section class="modern-search-panel">
+
+    <form method="GET"
+          action="/view_posts"
+          id="searchForm">
+
+        <div class="discussion-search-row">
+
+
+            <div class="modern-search-wrap search-input-wrap">
+
+                <i class="bi bi-search search-main-icon"></i>
+
+                <input type="text"
+                       name="search"
+                       id="searchInput"
+                       autocomplete="off"
+                       value="{{ request.args.get('search', '') }}"
+                       placeholder="Search topics, questions, ideas...">
+
+
+                {% if request.args.get('search') %}
+
+                <a href="/view_posts"
+                   class="clear-search-btn"
+                   title="Clear search">
+
+                    <i class="bi bi-x-lg"></i>
+
+                </a>
+
+                {% endif %}
+
+
+                <div id="suggestionBox"
+                     class="suggestion-box modern-suggestion-box">
+                </div>
+
+            </div>
+
+
+            <button type="submit"
+                    class="modern-search-btn">
+
+                Search
+
+                <i class="bi bi-arrow-right"></i>
+
+            </button>
+
+
+        </div>
+
+    </form>
+
+
+    <!-- QUICK FILTER LINKS -->
+
+    <div class="discussion-filter-row">
+
+        <span class="filter-label">
+            Quick access
+        </span>
+
+
+        <a href="/view_posts"
+           class="discussion-filter-chip active">
+
+            <i class="bi bi-grid"></i>
+            All Topics
+
+        </a>
+
+
+        <a href="/trending"
+           class="discussion-filter-chip">
+
+            <i class="bi bi-fire"></i>
+            Trending
+
+        </a>
+
+
+        <a href="/top_posts"
+           class="discussion-filter-chip">
+
+            <i class="bi bi-trophy"></i>
+            Top Discussions
+
+        </a>
+
+
+        <a href="/category_analysis"
+           class="discussion-filter-chip">
+
+            <i class="bi bi-tags"></i>
+            Categories
+
+        </a>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     DISCUSSION CONTENT HEADER
+===================================================== -->
+
+<div class="discussion-content-heading">
+
+    <div>
+
+        <span class="discussion-section-label">
+            COMMUNITY FEED
+        </span>
+
+        <h2>
+            {% if request.args.get('search') %}
+                Search Results
+            {% else %}
+                Latest Discussions
+            {% endif %}
+        </h2>
+
+    </div>
+
+
+    {% if posts %}
+
+    <div class="discussion-count">
+
+        <i class="bi bi-chat-square-text"></i>
+
+        <span>
+            {{ posts|length }}
+            {% if posts|length == 1 %}
+                discussion
+            {% else %}
+                discussions
+            {% endif %}
+        </span>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+
+
+<!-- =====================================================
+     DISCUSSION FEED
+===================================================== -->
+
+{% if posts %}
+
+<div class="modern-discussion-feed">
+
+
+    {% for post in posts %}
+
+
+    <article class="modern-topic-card tilt-card">
+
+
+        <!-- LEFT VOTE / ACTIVITY COLUMN -->
+
+        <div class="topic-side-column">
+
+            <div class="topic-avatar">
+
+                {{ post[1][0]|upper }}
+
+            </div>
+
+
+            <div class="topic-line"></div>
+
+
+            <div class="topic-like-count"
+     id="like-display-{{ post[0] }}">
+
+    <i class="bi bi-heart-fill"
+       id="like-heart-{{ post[0] }}"></i>
+
+    <strong data-like-count="{{ post[0] }}">
+        {{ post[4] }}
+    </strong>
+
+    <span>
+        likes
+    </span>
+
+</div>
+
+        </div>
+
+
+
+        <!-- MAIN CONTENT -->
+
+        <div class="topic-main-content">
+
+
+            <!-- TOP META ROW -->
+
+            <div class="topic-top-row">
+
+
+                <div class="topic-author-info">
+
+
+                    <div class="topic-author-row">
+
+                        <span class="topic-author-name">
+                            {{ post[3] }}
+                        </span>
+
+
+                        <span class="
+                            author-badge
+                            author-badge-{{ author_badges[post[3]]|lower }}
+                        ">
+
+                            {{ author_badges[post[3]] }}
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="topic-small-meta">
+
+                        <span>
+                            <i class="bi bi-clock"></i>
+                            Community Discussion
+                        </span>
+
+                        <span class="meta-separator">
+                            •
+                        </span>
+
+                        <span>
+                            <i class="bi bi-globe2"></i>
+                            Public
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- STATUS -->
+
+                {% if post[5] == "Solved" %}
+
+                <span class="modern-status status-complete">
+
+                    <i class="bi bi-check-circle-fill"></i>
+
+                    Solved
+
+                </span>
+
+                {% else %}
+
+                <span class="modern-status status-active">
+
+                    <span class="status-active-dot"></span>
+
+                    Open
+
+                </span>
+
+                {% endif %}
+
+
+            </div>
+
+
+
+            <!-- TOPIC TITLE -->
+
+            <h2 class="modern-topic-title">
+
+                <a href="/discussion/{{ post[0] }}">
+
+                    {{ post[1] }}
+
+                </a>
+
+            </h2>
+
+
+
+            <!-- TOPIC CONTENT -->
+
+            <p class="modern-topic-excerpt">
+
+                {{ post[2][:280] }}
+
+                {% if post[2]|length > 280 %}
+                    ...
+                {% endif %}
+
+            </p>
+
+
+
+            <!-- TOPIC METRICS -->
+
+         <!--  <div class="topic-metrics">
+
+
+                <div class="topic-metric">
+
+                    <span class="metric-icon">
+                        <i class="bi bi-heart"></i>
+                    </span>
+
+                    <div>
+                       <strong data-like-count="{{ post[0] }}">
+    {{ post[4] }}
+</strong>
+<span>Likes</span>
+                        <small>Likes</small>
+                    </div>
+
+                </div>
+
+
+                <div class="topic-metric">
+
+                    <span class="metric-icon metric-ai">
+                        <i class="bi bi-stars"></i>
+                    </span>
+
+                    <div>
+                        <strong>AI</strong>
+                        <small>Summary</small>
+                    </div>
+
+                </div> 
+
+
+                <div class="topic-metric">
+
+                    <span class="metric-icon metric-analysis">
+                        <i class="bi bi-emoji-smile"></i>
+                    </span>
+
+                    <div>
+                        <strong>NLP</strong>
+                        <small>Sentiment</small>
+                    </div>
+
+                </div>
+
+
+            </div>-->
+
+
+
+            <!-- ACTION BAR -->
+
+            <div class="modern-topic-actions">
+
+
+                <!-- PRIMARY ACTION -->
+
+                <a href="/discussion/{{ post[0] }}"
+                   class="topic-open-btn">
+
+                    Open Discussion
+
+                    <i class="bi bi-arrow-up-right"></i>
+
+                </a>
+
+
+
+                <!-- LIKE -->
+
+                <!-- <a href="/like/{{ post[0] }}"
+                   class="topic-action-btn">
+
+                    <i class="bi bi-heart"></i>
+
+                    Like
+
+                </a> -->
+                <button
+    type="button"
+    class="topic-action-btn like-btn {% if post[0] in liked_ids %}liked{% endif %}"
+    data-post-id="{{ post[0] }}">
+
+    {% if post[0] in liked_ids %}
+
+        <i class="bi bi-heart-fill"></i>
+        <span>Liked</span>
+
+    {% else %}
+
+        <i class="bi bi-heart"></i>
+        <span>Like</span>
+
+    {% endif %}
+
+</button>
+
+
+                <!-- RECOMMEND -->
+
+                <a href="/recommend/{{ post[0] }}"
+                   class="topic-action-btn">
+
+                    <i class="bi bi-lightbulb"></i>
+
+                    Recommend
+
+                </a>
+
+
+
+                <!-- SAVE -->
+
+                {% if post[0] in saved_ids %}
+
+                <a href="/unbookmark/{{ post[0] }}"
+                   class="topic-action-btn action-saved">
+
+                    <i class="bi bi-bookmark-fill"></i>
+
+                    Saved
+
+                </a>
+
+                {% else %}
+
+                <a href="/bookmark/{{ post[0] }}"
+                   class="topic-action-btn">
+
+                    <i class="bi bi-bookmark"></i>
+
+                    Save
+
+                </a>
+
+                {% endif %}
+
+
+
+                <!-- AI SUMMARY -->
+
+                <a href="/summary/{{ post[0] }}"
+                   class="topic-action-btn action-ai">
+
+                    <i class="bi bi-stars"></i>
+
+                    AI Summary
+
+                </a>
+
+
+
+                <!-- SENTIMENT -->
+
+                <a href="/sentiment/{{ post[0] }}"
+                   class="topic-action-btn">
+
+                    <i class="bi bi-activity"></i>
+
+                    Sentiment
+
+                </a>
+
+
+
+                <!-- OWNER MENU -->
+
+                {% if post[3] == current_user %}
+
+                <div class="dropdown topic-owner-menu">
+
+
+                    <button class="topic-more-btn"
+                            type="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false">
+
+                        <i class="bi bi-three-dots"></i>
+
+                    </button>
+
+
+                    <ul class="dropdown-menu owner-dropdown">
+
+
+                        <li>
+
+                            <a class="dropdown-item"
+                               href="/edit_post/{{ post[0] }}">
+
+                                <i class="bi bi-pencil-square"></i>
+
+                                Edit Discussion
+
+                            </a>
+
+                        </li>
+
+
+                        {% if post[5] != "Solved" %}
+
+                        <li>
+
+                            <a class="dropdown-item"
+                               href="/solve/{{ post[0] }}">
+
+                                <i class="bi bi-check-circle"></i>
+
+                                Mark as Solved
+
+                            </a>
+
+                        </li>
+
+                        {% endif %}
+
+
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+
+
+                        <li>
+
+                            <a class="dropdown-item delete-menu-item"
+                               href="/delete_post/{{ post[0] }}"
+
+                               onclick="return confirm('Delete this discussion?')">
+
+                                <i class="bi bi-trash3"></i>
+
+                                Delete Discussion
+
+                            </a>
+
+                        </li>
+
+
+                    </ul>
+
+                </div>
+
+                {% endif %}
+
+
+            </div>
+
+
+        </div>
+
+
+        <!-- DECORATIVE CARD GLOW -->
+
+        <div class="topic-card-glow"></div>
+
+
+    </article>
+
+
+    {% endfor %}
+
+
+</div>
+
+
+{% else %}
+
+
+<!-- =====================================================
+     EMPTY STATE
+===================================================== -->
+
+<div class="modern-empty-discussions">
+
+
+    <div class="empty-3d-icon">
+
+        <i class="bi bi-chat-square-dots"></i>
+
+    </div>
+
+
+    <h3>
+        No discussions found
+    </h3>
+
+
+    <p>
+
+        {% if request.args.get('search') %}
+
+            We couldn't find discussions matching
+            <strong>
+                "{{ request.args.get('search') }}"
+            </strong>.
+
+        {% else %}
+
+            There are no discussions yet.
+            Start the first conversation.
+
+        {% endif %}
+
+    </p>
+
+
+    <div class="empty-actions">
+
+
+        {% if request.args.get('search') %}
+
+        <a href="/view_posts"
+           class="topic-action-btn">
+
+            <i class="bi bi-arrow-left"></i>
+
+            View All Discussions
+
+        </a>
+
+        {% endif %}
+
+
+        <a href="/create_post"
+           class="topic-open-btn">
+
+            Start Discussion
+
+            <i class="bi bi-plus-lg"></i>
+
+        </a>
+
+
+    </div>
+
+
+</div>
+
+
+{% endif %}
+
+
+
+<!-- =====================================================
+     SEARCH SUGGESTIONS JAVASCRIPT
+===================================================== -->
+
+<script>
+
+const searchInput =
+    document.getElementById("searchInput");
+
+const suggestionBox =
+    document.getElementById("suggestionBox");
+
+let debounceTimer;
+
+
+searchInput.addEventListener(
+    "input",
+    function () {
+
+        clearTimeout(debounceTimer);
+
+        const query =
+            this.value.trim();
+
+
+        if (!query) {
+
+            suggestionBox.innerHTML = "";
+
+            suggestionBox.classList.remove("active");
+
+            return;
+
+        }
+
+
+        debounceTimer = setTimeout(function () {
+
+
+            fetch(
+                "/search_suggestions?q="
+                + encodeURIComponent(query)
+            )
+
+            .then(response => response.json())
+
+            .then(data => {
+
+
+                if (data.length === 0) {
+
+                    suggestionBox.innerHTML = `
+
+                        <div class="suggestion-empty">
+
+                            <i class="bi bi-search"></i>
+
+                            No matching discussions
+
+                        </div>
+
+                    `;
+
+                    suggestionBox.classList.add("active");
+
+                    return;
+
+                }
+
+
+                suggestionBox.innerHTML =
+                    data.map(item => `
+
+                        <div
+                            class="suggestion-item modern-suggestion-item"
+                            data-id="${item.id}">
+
+                            <span class="suggestion-icon">
+
+                                <i class="bi bi-chat-left-text"></i>
+
+                            </span>
+
+
+                            <div>
+
+                                <strong>
+                                    ${item.title}
+                                </strong>
+
+                                <small>
+                                    Open discussion
+                                </small>
+
+                            </div>
+
+
+                            <i class="bi bi-arrow-right suggestion-arrow"></i>
+
+                        </div>
+
+                    `).join("");
+
+
+                suggestionBox.classList.add("active");
+
+
+            })
+
+            .catch(function () {
+
+                suggestionBox.classList.remove("active");
+
+            });
+
+
+        }, 200);
+
+    }
+);
+
+
+
+suggestionBox.addEventListener(
+    "click",
+    function (event) {
+
+        const item =
+            event.target.closest(".suggestion-item");
+
+
+        if (!item) return;
+
+
+        window.location.href =
+            "/discussion/" + item.dataset.id;
+
+    }
+);
+
+
+
+document.addEventListener(
+    "click",
+    function (event) {
+
+        if (
+            !event.target.closest(".search-input-wrap")
+        ) {
+
+            suggestionBox.classList.remove("active");
+
+        }
+
+    }
+);
+
+</script>
+<script>
+
+document.querySelectorAll(".like-btn").forEach(function(button) {
+
+    button.addEventListener("click", async function() {
+
+        const postId = this.dataset.postId;
+        const btn = this;
+
+        if (btn.disabled) return;
+
+        btn.disabled = true;
+
+        try {
+
+            const response = await fetch("/like/" + postId, {
+                method: "POST",
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest"
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error("Like request failed");
+            }
+
+            const data = await response.json();
+
+
+            // ==========================================
+            // POST IS NOW LIKED
+            // ==========================================
+
+            if (data.liked === true) {
+
+                btn.innerHTML = `
+                    <i class="bi bi-heart-fill"></i>
+                    <span>Liked</span>
+                `;
+
+                btn.classList.add("liked");
+
+                showLikeMessage("You liked this discussion.");
+
+            }
+
+
+            // ==========================================
+            // POST IS NOW UNLIKED
+            // ==========================================
+
+            else {
+
+                btn.innerHTML = `
+                    <i class="bi bi-heart"></i>
+                    <span>Like</span>
+                `;
+
+                btn.classList.remove("liked");
+
+                showLikeMessage("Like removed.");
+
+            }
+
+
+            // ==========================================
+            // UPDATE LIKE COUNT WITHOUT PAGE RELOAD
+            // ==========================================
+
+            const countElements =
+                document.querySelectorAll(
+                    `[data-like-count="${postId}"]`
+                );
+
+            countElements.forEach(function(element) {
+
+                element.textContent = data.likes;
+
+            });
+
+// ==========================================
+// LEFT HEART 3D ANIMATION
+// ==========================================
+
+const leftHeart =
+    document.getElementById(
+        "like-heart-" + postId
+    );
+
+if (leftHeart) {
+
+    leftHeart.classList.remove("heart-pop");
+
+    // Restart animation
+    void leftHeart.offsetWidth;
+
+    leftHeart.classList.add("heart-pop");
+
+    setTimeout(function() {
+
+        leftHeart.classList.remove("heart-pop");
+
+    }, 650);
+}
+            // Small animation
+            btn.classList.remove("like-pop");
+
+            void btn.offsetWidth;
+
+            btn.classList.add("like-pop");
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            showLikeMessage(
+                "Unable to update the like."
+            );
+
+        }
+
+        btn.disabled = false;
+
+    });
+
+});
+
+
+
+function showLikeMessage(message) {
+
+    const oldToast =
+        document.querySelector(".simple-like-toast");
+
+    if (oldToast) {
+        oldToast.remove();
+    }
+
+
+    const toast =
+        document.createElement("div");
+
+    toast.className =
+        "simple-like-toast";
+
+    toast.innerHTML = `
+
+        <div class="simple-toast-icon">
+            <i class="bi bi-heart-fill"></i>
+        </div>
+
+        <div>
+            <strong>Discussion Like</strong>
+            <span>${message}</span>
+        </div>
+
+    `;
+
+    document.body.appendChild(toast);
+
+
+    setTimeout(function() {
+
+        toast.classList.add("hide");
+
+        setTimeout(function() {
+
+            toast.remove();
+
+        }, 300);
+
+    }, 2000);
+
+}
+
+</script>
+
+{% endblock %}
