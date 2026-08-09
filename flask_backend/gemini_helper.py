@@ -1,4 +1,3 @@
-#AQ.Ab8RN6K6mfKNfEcs9XDyG2WvXda9lYqX80YUnGe5vBR3IQyVLQ
 import os
 from google import genai
 
