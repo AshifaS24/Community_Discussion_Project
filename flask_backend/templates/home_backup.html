@@ -1,0 +1,2486 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+
+/* =========================================================
+   K-DISC USER HOME
+========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+.user-dashboard {
+    width: 100%;
+    min-height: calc(100vh - 132px);
+
+    margin: 0;
+    padding: 0;
+
+    background:
+        radial-gradient(
+            circle at 12% 10%,
+            rgba(62, 215, 199, 0.16),
+            transparent 25%
+        ),
+        radial-gradient(
+            circle at 90% 18%,
+            rgba(132, 118, 255, 0.15),
+            transparent 28%
+        ),
+        linear-gradient(
+            135deg,
+            #f5fbfa 0%,
+            #f7f9ff 55%,
+            #f8f7ff 100%
+        );
+
+    box-sizing: border-box;
+}
+
+.dashboard-layout {
+    display: grid;
+    grid-template-columns: 230px minmax(0, 1fr);
+    max-width: none;
+    margin: 0;
+}
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.user-sidebar {
+    min-height: calc(100vh - 120px);
+    padding: 30px 18px;
+    background: rgba(255,255,255,0.78);
+    border-right: 1px solid rgba(18,58,70,0.08);
+    backdrop-filter: blur(20px);
+
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-title {
+    padding: 0 12px 20px;
+}
+
+.sidebar-title span {
+    font-size: 11px;
+    letter-spacing: 2px;
+    font-weight: 800;
+    color: #94a3b8;
+}
+
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+
+    padding: 12px 14px;
+
+    color: #415064;
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    border-radius: 12px;
+
+    transition: 0.25s ease;
+}
+
+.sidebar-link i {
+    font-size: 17px;
+}
+
+.sidebar-link:hover {
+    background: #edf9f7;
+    color: #0d8f83;
+    transform: translateX(3px);
+}
+
+.sidebar-link.active {
+    background: linear-gradient(
+        135deg,
+        #dff8f4,
+        #edfdfb
+    );
+
+    color: #078f82;
+
+    box-shadow:
+        0 8px 22px rgba(15, 143, 130, 0.08);
+}
+
+.sidebar-bottom {
+    margin-top: auto;
+    padding-top: 25px;
+}
+
+
+/* =========================================================
+   MAIN AREA
+========================================================= */
+
+.dashboard-main {
+    padding: 25px 30px 50px;
+    min-width: 0;
+}
+
+
+/* =========================================================
+   SEARCH BAR
+========================================================= */
+
+.dashboard-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+
+    margin-bottom: 22px;
+}
+
+.dashboard-search {
+    position: relative;
+    width: 100%;
+    max-width: 540px;
+}
+
+.dashboard-search i {
+    position: absolute;
+
+    left: 18px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: #8b99a8;
+}
+
+.dashboard-search input {
+    width: 100%;
+    height: 47px;
+
+    border: 1px solid #e0e9e7;
+
+    border-radius: 25px;
+
+    background: rgba(255,255,255,0.88);
+
+    padding: 0 20px 0 46px;
+
+    font-size: 14px;
+
+    outline: none;
+
+    box-shadow:
+        0 8px 25px rgba(29, 55, 75, 0.05);
+
+    transition: 0.2s;
+}
+
+.dashboard-search input:focus {
+    border-color: #19a99a;
+
+    box-shadow:
+        0 0 0 4px rgba(25,169,154,0.09);
+}
+
+.topbar-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.top-action {
+    width: 43px;
+    height: 43px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: white;
+
+    border: 1px solid #e5eceb;
+    border-radius: 13px;
+
+    color: #405064;
+
+    text-decoration: none;
+
+    box-shadow:
+        0 8px 20px rgba(22, 48, 68, 0.05);
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.user-hero {
+    min-height: 390px;
+
+    position: relative;
+
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    align-items: center;
+
+    overflow: hidden;
+
+    padding: 48px 55px;
+
+    background:
+        linear-gradient(
+            125deg,
+            rgba(255,255,255,0.96),
+            rgba(246,252,251,0.94) 48%,
+            rgba(240,239,255,0.92)
+        );
+
+    border: 1px solid rgba(27, 132, 121, 0.10);
+
+    border-radius: 30px;
+
+    box-shadow:
+        0 28px 70px rgba(30, 75, 86, 0.11),
+        inset 0 1px 0 rgba(255,255,255,0.9);
+
+    margin-bottom: 24px;
+}
+
+.user-hero::before {
+    content: "";
+
+    position: absolute;
+
+    width: 360px;
+    height: 360px;
+
+    left: -180px;
+    bottom: -200px;
+
+    background: #61dfd1;
+
+    filter: blur(80px);
+
+    opacity: 0.20;
+
+    border-radius: 50%;
+}
+
+.user-hero::after {
+    content: "";
+
+    position: absolute;
+
+    width: 360px;
+    height: 360px;
+
+    right: -170px;
+    top: -180px;
+
+    background: #9a8cff;
+
+    filter: blur(85px);
+
+    opacity: 0.19;
+
+    border-radius: 50%;
+}
+
+
+/* HERO TEXT */
+
+.hero-content {
+    position: relative;
+    z-index: 5;
+}
+
+.hero-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    color: #078f82;
+
+    font-size: 12px;
+    font-weight: 800;
+
+    letter-spacing: 2px;
+
+    margin-bottom: 16px;
+}
+
+.hero-eyebrow-dot {
+    width: 10px;
+    height: 10px;
+
+    border-radius: 50%;
+
+    background: #25cbb8;
+
+    box-shadow:
+        0 0 0 7px rgba(37,203,184,0.12);
+}
+
+.hero-content h1 {
+    max-width: 650px;
+
+    margin: 0 0 14px;
+
+    color: #10243e;
+
+    font-family: Georgia, "Times New Roman", serif;
+
+    font-size: clamp(38px, 4vw, 59px);
+
+    line-height: 1.04;
+
+    font-weight: 500;
+}
+
+.hero-content h1 span {
+    color: #0b9487;
+}
+
+.hero-description {
+    max-width: 650px;
+
+    color: #65788f;
+
+    font-size: 16px;
+    line-height: 1.75;
+
+    margin-bottom: 24px;
+}
+
+.hero-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.hero-primary-btn,
+.hero-secondary-btn {
+    min-height: 48px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 9px;
+
+    padding: 0 22px;
+
+    border-radius: 13px;
+
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    transition: 0.25s ease;
+}
+
+.hero-primary-btn {
+    color: white;
+
+    background:
+        linear-gradient(
+            135deg,
+            #078f82,
+            #18b4a5
+        );
+
+    box-shadow:
+        0 12px 26px rgba(8,143,130,0.22);
+}
+
+.hero-primary-btn:hover {
+    color: white;
+
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 16px 30px rgba(8,143,130,0.28);
+}
+
+.hero-secondary-btn {
+    color: #17324c;
+
+    background: rgba(255,255,255,0.76);
+
+    border: 1px solid #dce7e5;
+}
+
+.hero-secondary-btn:hover {
+    color: #078f82;
+    background: white;
+
+    transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   3D HERO VISUAL
+========================================================= */
+
+.hero-visual {
+    min-height: 290px;
+
+    position: relative;
+    z-index: 4;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    perspective: 1000px;
+}
+
+.orbit {
+    position: absolute;
+
+    width: 340px;
+    height: 150px;
+
+    border: 1px solid rgba(101, 101, 210, 0.18);
+
+    border-radius: 50%;
+
+    transform: rotate(-9deg);
+}
+
+.orbit.two {
+    width: 400px;
+    height: 200px;
+
+    opacity: 0.65;
+
+    transform: rotate(12deg);
+}
+
+.orbit.three {
+    width: 285px;
+    height: 115px;
+
+    opacity: 0.6;
+
+    transform: rotate(-24deg);
+}
+
+.kdisc-cube {
+    position: relative;
+
+    width: 175px;
+    height: 175px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 38px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #073d48,
+            #087f78 55%,
+            #1cc6b3
+        );
+
+    color: white;
+
+    font-size: 41px;
+    font-weight: 800;
+
+    letter-spacing: -2px;
+
+    box-shadow:
+        0 35px 60px rgba(8, 89, 96, 0.28),
+        inset 7px 7px 18px rgba(255,255,255,0.12),
+        inset -9px -12px 20px rgba(0,0,0,0.14);
+
+    transform:
+        rotateX(7deg)
+        rotateY(-11deg)
+        rotateZ(-2deg);
+
+    animation:
+        cubeFloat
+        5s ease-in-out infinite;
+}
+
+.kdisc-cube span {
+    color: #4ce2d2;
+}
+
+@keyframes cubeFloat {
+
+    0%, 100% {
+        transform:
+            translateY(0)
+            rotateX(7deg)
+            rotateY(-11deg);
+    }
+
+    50% {
+        transform:
+            translateY(-13px)
+            rotateX(4deg)
+            rotateY(-5deg);
+    }
+}
+
+
+/* FLOATING CARDS */
+
+.floating-card {
+    position: absolute;
+    z-index: 10;
+
+    min-width: 145px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 12px 14px;
+
+    background: rgba(255,255,255,0.92);
+
+    border: 1px solid rgba(255,255,255,0.9);
+
+    border-radius: 15px;
+
+    box-shadow:
+        0 18px 40px rgba(34, 55, 88, 0.14);
+
+    backdrop-filter: blur(16px);
+}
+
+.floating-card i {
+    width: 36px;
+    height: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #e5f9f6;
+
+    color: #07998b;
+
+    border-radius: 11px;
+}
+
+.floating-card small {
+    display: block;
+
+    color: #9aa8b8;
+
+    font-size: 9px;
+    font-weight: 800;
+
+    letter-spacing: 1px;
+}
+
+.floating-card strong {
+    display: block;
+
+    color: #20364f;
+
+    font-size: 13px;
+}
+
+.float-one {
+    top: 16px;
+    right: 2px;
+}
+
+.float-two {
+    bottom: 16px;
+    left: 0;
+}
+
+.float-three {
+    right: -8px;
+    bottom: 26px;
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+.user-stat-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0,1fr));
+
+    gap: 16px;
+
+    margin-bottom: 24px;
+}
+
+.user-stat-card {
+    position: relative;
+
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    padding: 20px;
+
+    background:
+        rgba(255,255,255,0.88);
+
+    border:
+        1px solid rgba(31,87,96,0.08);
+
+    border-radius: 19px;
+
+    box-shadow:
+        0 15px 35px rgba(29,61,80,0.07);
+
+    transition: 0.25s ease;
+}
+
+.user-stat-card:hover {
+    transform: translateY(-6px);
+
+    box-shadow:
+        0 22px 42px rgba(29,61,80,0.12);
+}
+
+.user-stat-card::after {
+    content: "";
+
+    position: absolute;
+
+    width: 80px;
+    height: 80px;
+
+    right: -25px;
+    top: -30px;
+
+    background: rgba(23,183,165,0.07);
+
+    border-radius: 50%;
+}
+
+.stat-icon {
+    width: 49px;
+    height: 49px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background: #e5f8f5;
+
+    color: #079487;
+
+    font-size: 20px;
+}
+
+.stat-icon.blue {
+    background: #e9f3ff;
+    color: #3186db;
+}
+
+.stat-icon.purple {
+    background: #f0edff;
+    color: #7567e8;
+}
+
+.stat-icon.orange {
+    background: #fff2e5;
+    color: #e78b32;
+}
+
+.stat-number {
+    color: #152c46;
+
+    font-size: 24px;
+    font-weight: 800;
+
+    line-height: 1;
+}
+
+.stat-label {
+    color: #8795a7;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    margin-top: 6px;
+}
+
+
+/* =========================================================
+   CONTENT PANELS
+========================================================= */
+
+.community-content-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0,1fr));
+
+    gap: 18px;
+
+    margin-bottom: 20px;
+}
+
+.community-panel {
+    background:
+        rgba(255,255,255,0.88);
+
+    border:
+        1px solid rgba(31,87,96,0.08);
+
+    border-radius: 20px;
+
+    padding: 21px;
+
+    box-shadow:
+        0 15px 35px rgba(29,61,80,0.065);
+}
+
+.panel-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 17px;
+}
+
+.panel-heading h3 {
+    margin: 0;
+
+    color: #19304a;
+
+    font-size: 15px;
+    font-weight: 750;
+}
+
+.panel-heading a {
+    color: #15998c;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    text-decoration: none;
+}
+
+
+/* DISCUSSION ITEM */
+
+.discussion-mini-item {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 11px 0;
+
+    border-bottom:
+        1px solid #edf1f2;
+}
+
+.discussion-mini-item:last-child {
+    border-bottom: none;
+}
+
+.discussion-mini-icon {
+    width: 40px;
+    height: 40px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #e2f8f4,
+            #f0fffc
+        );
+
+    color: #0a9487;
+}
+
+.discussion-mini-text {
+    min-width: 0;
+}
+
+.discussion-mini-text strong {
+    display: block;
+
+    overflow: hidden;
+
+    color: #293c52;
+
+    font-size: 12px;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.discussion-mini-text span {
+    display: block;
+
+    margin-top: 3px;
+
+    color: #98a4b2;
+
+    font-size: 10px;
+}
+
+
+/* EMPTY */
+
+.empty-panel {
+    min-height: 150px;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+
+    color: #8997a7;
+}
+
+.empty-panel i {
+    margin-bottom: 10px;
+
+    color: #b8d9d4;
+
+    font-size: 28px;
+}
+
+
+/* =========================================================
+   BOTTOM GRID
+========================================================= */
+
+.dashboard-bottom-grid {
+    display: grid;
+
+    grid-template-columns:
+        1.3fr 0.7fr;
+
+    gap: 18px;
+}
+
+.activity-panel,
+.contribution-panel {
+    background:
+        rgba(255,255,255,0.88);
+
+    border:
+        1px solid rgba(31,87,96,0.08);
+
+    border-radius: 20px;
+
+    padding: 22px;
+
+    box-shadow:
+        0 15px 35px rgba(29,61,80,0.065);
+}
+
+.activity-row {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 10px 0;
+
+    border-bottom:
+        1px solid #edf1f2;
+}
+
+.activity-row:last-child {
+    border-bottom: none;
+}
+
+.activity-avatar {
+    width: 37px;
+    height: 37px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0b8f83,
+            #27c3b3
+        );
+
+    color: white;
+
+    font-weight: 700;
+}
+
+.activity-text strong {
+    color: #293d54;
+
+    font-size: 12px;
+}
+
+.activity-text span {
+    display: block;
+
+    margin-top: 3px;
+
+    color: #96a2b0;
+
+    font-size: 10px;
+}
+
+
+/* CONTRIBUTION VISUAL */
+
+.contribution-number {
+    margin-top: 22px;
+
+    color: #102a44;
+
+    font-size: 40px;
+    font-weight: 800;
+}
+
+.contribution-label {
+    color: #8795a7;
+    font-size: 12px;
+}
+
+.contribution-chart {
+    height: 85px;
+
+    display: flex;
+    align-items: flex-end;
+
+    gap: 7px;
+
+    margin-top: 24px;
+}
+
+.chart-bar {
+    flex: 1;
+
+    min-height: 12px;
+
+    border-radius: 10px 10px 4px 4px;
+
+    background:
+        linear-gradient(
+            to top,
+            #0d978a,
+            #5dd8cb
+        );
+
+    opacity: 0.75;
+}
+
+.chart-bar:nth-child(1) { height: 28%; }
+.chart-bar:nth-child(2) { height: 45%; }
+.chart-bar:nth-child(3) { height: 38%; }
+.chart-bar:nth-child(4) { height: 66%; }
+.chart-bar:nth-child(5) { height: 50%; }
+.chart-bar:nth-child(6) { height: 78%; }
+.chart-bar:nth-child(7) { height: 62%; }
+.chart-bar:nth-child(8) { height: 90%; }
+.chart-bar:nth-child(9) { height: 70%; }
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    .dashboard-layout {
+        grid-template-columns: 82px 1fr;
+    }
+
+    .sidebar-title {
+        display: none;
+    }
+
+    .sidebar-link {
+        justify-content: center;
+    }
+
+    .sidebar-link span {
+        display: none;
+    }
+
+    .user-stat-grid {
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+    .community-content-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .community-content-grid .community-panel:last-child {
+        grid-column: span 2;
+    }
+}
+
+
+@media (max-width: 850px) {
+
+    .dashboard-layout {
+        display: block;
+    }
+
+    .user-sidebar {
+        display: none;
+    }
+
+    .dashboard-main {
+        padding: 18px;
+    }
+
+    .user-hero {
+        grid-template-columns: 1fr;
+
+        padding: 38px 28px;
+    }
+
+    .hero-visual {
+        margin-top: 35px;
+    }
+
+    .community-content-grid,
+    .dashboard-bottom-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .community-content-grid .community-panel:last-child {
+        grid-column: auto;
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .user-stat-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .topbar-actions {
+        display: none;
+    }
+
+    .hero-content h1 {
+        font-size: 37px;
+    }
+
+    .hero-visual {
+        transform: scale(0.82);
+    }
+}
+
+</style>
+
+
+<div class="user-dashboard">
+
+<div class="dashboard-layout">
+
+
+<!-- =====================================================
+     LEFT SIDEBAR
+===================================================== -->
+
+<aside class="user-sidebar">            
+
+    <div class="sidebar-title">
+        <span>MEMBER SPACE</span>
+    </div>
+
+
+    <nav class="sidebar-menu">
+
+        <a href="{{ url_for('home') }}"
+           class="sidebar-link active">
+
+            <i class="bi bi-house-door"></i>
+            <span>Home</span>
+
+        </a>
+
+
+        <a href="{{ url_for('view_posts') }}"
+           class="sidebar-link">
+
+            <i class="bi bi-chat-square-text"></i>
+            <span>Discussions</span>
+
+        </a>
+
+
+        <a href="{{ url_for('create_post') }}"
+           class="sidebar-link">
+
+            <i class="bi bi-plus-square"></i>
+            <span>Create Discussion</span>
+
+        </a>
+
+
+        <a href="/bookmarks"
+           class="sidebar-link">
+
+            <i class="bi bi-bookmark"></i>
+            <span>Bookmarks</span>
+
+        </a>
+
+
+        <a href="/my_activity"
+           class="sidebar-link">
+
+            <i class="bi bi-clock-history"></i>
+            <span>My Activity</span>
+
+        </a>
+
+
+        <a href="/profile"
+           class="sidebar-link">
+
+            <i class="bi bi-person"></i>
+            <span>Profile</span>
+
+        </a>
+
+    </nav>
+
+
+    <div class="sidebar-bottom">
+
+        <a href="/logout"
+           class="sidebar-link">
+
+            <i class="bi bi-box-arrow-left"></i>
+            <span>Logout</span>
+
+        </a>
+
+    </div>
+
+</aside>
+
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<main class="dashboard-main">
+
+
+<!-- SEARCH -->
+
+<div class="dashboard-topbar">
+
+    <form action="{{ url_for('view_posts') }}"
+          method="GET"
+          class="dashboard-search">
+
+        <i class="bi bi-search"></i>
+
+        <input
+            type="text"
+            name="search"
+            placeholder="Search discussions, topics and ideas..."
+        >
+
+    </form>
+
+    <div class="topbar-actions">
+
+        <a href="/bookmarks"
+           class="top-action"
+           title="Bookmarks">
+
+            <i class="bi bi-bookmark"></i>
+
+        </a>
+
+        <a href="/profile"
+           class="top-action"
+           title="Profile">
+
+            <i class="bi bi-person"></i>
+
+        </a>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     HERO
+===================================================== -->
+
+<section class="user-hero">
+
+
+<div class="hero-content">
+
+    <div class="hero-eyebrow">
+
+        <span class="hero-eyebrow-dot"></span>
+
+        K-DISC COMMUNITY SPACE
+
+    </div>
+
+
+    <h1>
+
+        Welcome,
+        <span>{{ user_name }}</span>
+
+    </h1>
+
+
+    <p class="hero-description">
+
+        Your space to explore ideas, join meaningful
+        conversations and contribute to a community
+        building solutions through discussion.
+
+    </p>
+
+
+    <div class="hero-buttons">
+
+        <a href="{{ url_for('create_post') }}"
+           class="hero-primary-btn">
+
+            <i class="bi bi-plus-circle"></i>
+
+            Start a Discussion
+
+        </a>
+
+
+        <a href="{{ url_for('view_posts') }}"
+           class="hero-secondary-btn">
+
+            <i class="bi bi-chat-square-text"></i>
+
+            Explore Discussions
+
+        </a>
+
+    </div>
+
+</div>
+
+
+
+<!-- 3D VISUAL -->
+
+<div class="hero-visual">
+
+    <div class="orbit"></div>
+    <div class="orbit two"></div>
+    <div class="orbit three"></div>
+
+
+    <div class="kdisc-cube">
+
+        K<span>DISC</span>
+
+    </div>
+
+
+    <div class="floating-card float-one">
+
+        <i class="bi bi-chat-dots"></i>
+
+        <div>
+
+            <small>YOUR IDEAS</small>
+
+            <strong>
+                {{ user_discussions|default(0) }}
+                Discussions
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="floating-card float-two">
+
+        <i class="bi bi-people"></i>
+
+        <div>
+
+            <small>COMMUNITY</small>
+
+            <strong>
+                {{ total_users|default(0) }}
+                Members
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="floating-card float-three">
+
+        <i class="bi bi-heart"></i>
+
+        <div>
+
+            <small>IMPACT</small>
+
+            <strong>
+                {{ likes_received|default(0) }}
+                Likes
+            </strong>
+
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================================
+     USER STAT CARDS
+===================================================== -->
+
+<section class="user-stat-grid">
+
+
+<div class="user-stat-card">
+
+    <div class="stat-icon">
+
+        <i class="bi bi-chat-square-text"></i>
+
+    </div>
+
+    <div>
+
+        <div class="stat-number">
+            {{ user_discussions|default(0) }}
+        </div>
+
+        <div class="stat-label">
+            YOUR DISCUSSIONS
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="user-stat-card">
+
+    <div class="stat-icon blue">
+
+        <i class="bi bi-chat-dots"></i>
+
+    </div>
+
+    <div>
+
+        <div class="stat-number">
+            {{ user_comments|default(0) }}
+        </div>
+
+        <div class="stat-label">
+            YOUR COMMENTS
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="user-stat-card">
+
+    <div class="stat-icon purple">
+
+        <i class="bi bi-heart"></i>
+
+    </div>
+
+    <div>
+
+        <div class="stat-number">
+            {{ likes_received|default(0) }}
+        </div>
+
+        <div class="stat-label">
+            LIKES RECEIVED
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="user-stat-card">
+
+    <div class="stat-icon orange">
+
+        <i class="bi bi-bookmark"></i>
+
+    </div>
+
+    <div>
+
+        <div class="stat-number">
+            {{ bookmark_count|default(0) }}
+        </div>
+
+        <div class="stat-label">
+            SAVED DISCUSSIONS
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================================
+     DISCUSSION PANELS
+===================================================== -->
+
+<section class="community-content-grid">
+
+
+<!-- CONTINUE CONVERSATION -->
+
+<div class="community-panel">
+
+    <div class="panel-heading">
+
+        <h3>
+            Continue the Conversation
+        </h3>
+
+        <a href="{{ url_for('view_posts') }}">
+            View all
+        </a>
+
+    </div>
+
+
+    {% if continue_discussions %}
+
+        {% for post in continue_discussions %}
+
+        <div class="discussion-mini-item">
+
+            <div class="discussion-mini-icon">
+                <i class="bi bi-chat"></i>
+            </div>
+
+            <div class="discussion-mini-text">
+
+                <strong>
+                    {{ post[1] }}
+                </strong>
+
+                <span>
+                    Continue participating in this discussion
+                </span>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="empty-panel">
+
+            <i class="bi bi-chat-square-dots"></i>
+
+            <span>
+                Join a discussion to start
+                building your conversation history.
+            </span>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+
+
+<!-- TRENDING -->
+
+<div class="community-panel">
+
+    <div class="panel-heading">
+
+        <h3>
+            Trending Discussions
+        </h3>
+
+        <a href="{{ url_for('view_posts') }}">
+            View all
+        </a>
+
+    </div>
+
+
+    {% if trending_discussions %}
+
+        {% for post in trending_discussions %}
+
+        <div class="discussion-mini-item">
+
+            <div class="discussion-mini-icon">
+
+                <i class="bi bi-fire"></i>
+
+            </div>
+
+            <div class="discussion-mini-text">
+
+                <strong>
+                    {{ post[1] }}
+                </strong>
+
+                <span>
+
+                    {{ post[4]|default(0) }}
+                    likes
+
+                </span>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="empty-panel">
+
+            <i class="bi bi-graph-up-arrow"></i>
+
+            <span>
+                Trending conversations will
+                appear here.
+            </span>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+
+
+<!-- RECOMMENDED -->
+
+<div class="community-panel">
+
+    <div class="panel-heading">
+
+        <h3>
+            Recommended for You
+        </h3>
+
+        <a href="{{ url_for('view_posts') }}">
+            Explore
+        </a>
+
+    </div>
+
+
+    {% if recommended_discussions %}
+
+        {% for post in recommended_discussions %}
+
+        <div class="discussion-mini-item">
+
+            <div class="discussion-mini-icon">
+
+                <i class="bi bi-lightbulb"></i>
+
+            </div>
+
+            <div class="discussion-mini-text">
+
+                <strong>
+                    {{ post[1] }}
+                </strong>
+
+                <span>
+                    Discover this community idea
+                </span>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="empty-panel">
+
+            <i class="bi bi-stars"></i>
+
+            <span>
+                Community recommendations
+                will appear here.
+            </span>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================================
+     BOTTOM SECTION
+===================================================== -->
+
+<section class="dashboard-bottom-grid">
+
+
+<!-- COMMUNITY ACTIVITY -->
+
+<div class="activity-panel">
+
+    <div class="panel-heading">
+
+        <h3>
+            Latest Community Activity
+        </h3>
+
+        <a href="{{ url_for('view_posts') }}">
+            Explore community
+        </a>
+
+    </div>
+
+
+    {% if latest_activity %}
+
+        {% for activity in latest_activity %}
+
+        <div class="activity-row">
+
+            <div class="activity-avatar">
+
+                <i class="bi bi-activity"></i>
+
+            </div>
+
+            <div class="activity-text">
+
+                <strong>
+                    {{ activity[1] }}
+                </strong>
+
+                <span>
+                    Community activity
+                </span>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="empty-panel">
+
+            <i class="bi bi-activity"></i>
+
+            <span>
+                Community activity will appear here.
+            </span>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+
+
+<!-- CONTRIBUTION -->
+
+<div class="contribution-panel">
+
+    <div class="panel-heading">
+
+        <h3>
+            Your Contribution
+        </h3>
+
+        <i class="bi bi-bar-chart-line"
+           style="color:#0b978a;"></i>
+
+    </div>
+
+
+    <div class="contribution-number">
+
+        {{
+            (user_discussions|default(0))
+            +
+            (user_comments|default(0))
+        }}
+
+    </div>
+
+    <div class="contribution-label">
+
+        Total discussion contributions
+
+    </div>
+
+
+    <div class="contribution-chart">
+
+        <div class="chart-bar"></div>
+        <div class="chart-bar"></div>
+        <div class="chart-bar"></div>
+        <div class="chart-bar"></div>
+        <div class="chart-bar"></div>
+        <div class="chart-bar"></div>
+        <div class="chart-bar"></div>
+        <div class="chart-bar"></div>
+        <div class="chart-bar"></div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+</main>
+
+</div>
+
+</div>
+<style>
+
+/* =========================================================
+   FINAL SCREEN SIZE / FIT FIX
+   Keeps existing design but makes dashboard compact
+========================================================= */
+
+/* MAIN DASHBOARD WIDTH */
+.dashboard-layout {
+    display: grid !important;
+
+    grid-template-columns:
+        250px minmax(0, 1fr);
+
+    width: 100% !important;
+    max-width: none !important;
+
+    margin: 0 !important;
+
+    min-height:
+        calc(100vh - 135px);
+
+    box-sizing: border-box;
+}
+
+/* SIDEBAR */
+
+.user-sidebar {
+    width: 250px !important;
+
+    min-height:
+        calc(100vh - 135px);
+
+    height:
+        calc(100vh - 135px);
+
+    box-sizing: border-box;
+
+    padding:
+        30px 18px;
+
+    position: sticky;
+
+    top: 135px;
+
+    align-self: start;
+
+    overflow-y: auto;
+}
+
+.sidebar-title {
+    padding: 0 10px 15px;
+}
+
+.sidebar-menu {
+    gap: 3px;
+}
+
+.sidebar-link {
+    padding: 10px 12px;
+
+    font-size: 13px;
+
+    border-radius: 11px;
+}
+
+
+/* MAIN CONTENT */
+
+.dashboard-main {
+    width: 100% !important;
+
+    min-width: 0;
+
+    box-sizing: border-box;
+
+    padding:
+        24px 38px 50px;
+}
+
+
+/* TOP SEARCH */
+
+.dashboard-topbar {
+    margin-bottom: 18px;
+}
+
+.dashboard-search {
+    max-width: 530px;
+}
+
+.dashboard-search input {
+    height: 45px;
+}
+
+
+/* =========================================================
+   HERO — IMPORTANT SIZE FIX
+========================================================= */
+
+.user-hero {
+    width: 100% !important;
+
+    min-height: 340px;
+
+    height: 340px;
+
+    box-sizing: border-box;
+
+    padding:
+        34px 48px;
+
+    border-radius:
+        27px;
+
+    margin-bottom:
+        18px;
+}
+
+
+/* HERO TITLE */
+
+.hero-content h1 {
+
+    font-size: clamp(38px, 3.2vw, 54px);
+
+    margin-bottom: 12px;
+
+    line-height: 1.02;
+}
+
+
+/* DESCRIPTION */
+
+.hero-description {
+
+    max-width: 610px;
+
+    font-size: 15px;
+
+    line-height: 1.6;
+
+    margin-bottom: 19px;
+}
+
+
+/* BUTTONS */
+
+.hero-primary-btn,
+.hero-secondary-btn {
+
+    min-height: 45px;
+
+    padding: 0 20px;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   3D VISUAL SIZE FIX
+========================================================= */
+
+.hero-visual {
+
+    min-height: 245px;
+}
+
+
+/* MAIN 3D KDISC OBJECT */
+
+.kdisc-cube {
+
+    width: 155px;
+    height: 155px;
+
+    border-radius: 32px;
+
+    font-size: 36px;
+}
+
+
+/* ORBITS */
+
+.orbit {
+
+    width: 290px;
+    height: 125px;
+}
+
+.orbit.two {
+
+    width: 340px;
+    height: 165px;
+}
+
+.orbit.three {
+
+    width: 245px;
+    height: 100px;
+}
+
+
+/* FLOATING CARDS */
+
+.floating-card {
+
+    min-width: 130px;
+
+    padding: 10px 12px;
+
+    gap: 8px;
+
+    border-radius: 13px;
+}
+
+.floating-card i {
+
+    width: 32px;
+    height: 32px;
+
+    font-size: 14px;
+}
+
+.floating-card small {
+
+    font-size: 8px;
+}
+
+.floating-card strong {
+
+    font-size: 12px;
+}
+
+
+.float-one {
+
+    top: 12px;
+    right: 2px;
+}
+
+
+.float-two {
+
+    bottom: 10px;
+    left: 3px;
+}
+
+
+.float-three {
+
+    right: -2px;
+    bottom: 18px;
+}
+
+
+/* =========================================================
+   STAT CARDS
+========================================================= */
+
+.user-stat-grid {
+    width: 100% !important;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 14px;
+
+    margin-bottom: 18px;
+}
+
+
+.user-stat-card {
+
+    padding: 16px;
+
+    border-radius: 17px;
+}
+
+
+.stat-icon {
+
+    width: 43px;
+    height: 43px;
+
+    font-size: 18px;
+}
+
+
+.stat-number {
+
+    font-size: 21px;
+}
+
+
+.stat-label {
+
+    font-size: 10px;
+
+    margin-top: 4px;
+}
+
+
+/* =========================================================
+   CONTENT PANELS
+========================================================= */
+
+.community-content-grid {
+    width: 100% !important;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 15px;
+
+    margin-bottom: 17px;
+}
+
+
+.community-panel {
+
+    padding: 18px;
+
+    border-radius: 18px;
+}
+
+
+.panel-heading {
+
+    margin-bottom: 12px;
+}
+
+
+.discussion-mini-item {
+
+    padding: 8px 0;
+}
+
+
+.discussion-mini-icon {
+
+    width: 36px;
+    height: 36px;
+}
+
+
+/* =========================================================
+   BOTTOM SECTION
+========================================================= */
+
+.dashboard-bottom-grid {
+
+    gap: 15px;
+}
+
+
+.activity-panel,
+.contribution-panel {
+
+    padding: 18px;
+
+    border-radius: 18px;
+}
+
+
+/* =========================================================
+   LARGE DESKTOP
+========================================================= */
+@media (min-width: 1600px) {
+
+    .dashboard-layout {
+        width: 100%;
+        max-width: none;
+        margin: 0;
+        grid-template-columns: 250px minmax(0, 1fr);
+    }
+
+}
+
+/* =========================================================
+   NORMAL LAPTOP
+========================================================= */
+
+@media (max-width: 1400px) {
+
+   .dashboard-layout {
+    display: grid;
+    grid-template-columns: 250px minmax(0, 1fr);
+    width: 100%;
+    max-width: none;
+    margin: 0;
+}
+
+
+    .dashboard-main {
+
+        padding:
+            20px 22px 35px;
+    }
+
+
+    .user-hero {
+
+        height: 320px;
+
+        padding:
+            30px 38px;
+    }
+
+
+    .hero-content h1 {
+
+        font-size: 46px;
+    }
+
+
+    .kdisc-cube {
+
+        width: 145px;
+        height: 145px;
+
+        font-size: 33px;
+    }
+
+}
+
+
+/* =========================================================
+   SMALL LAPTOP
+========================================================= */
+
+@media (max-width: 1150px) {
+
+    .dashboard-layout {
+
+        grid-template-columns:
+            75px minmax(0,1fr);
+    }
+
+
+    .sidebar-title {
+
+        display: none;
+    }
+
+
+    .sidebar-link {
+
+        justify-content: center;
+
+        padding: 11px;
+    }
+
+
+    .sidebar-link span {
+
+        display: none;
+    }
+
+
+    .user-hero {
+
+        height: auto;
+
+        min-height: 310px;
+
+        padding: 28px 30px;
+    }
+
+
+    .hero-content h1 {
+
+        font-size: 42px;
+    }
+
+
+    .hero-description {
+
+        font-size: 14px;
+    }
+
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 850px) {
+
+    .dashboard-layout {
+
+        display: block;
+    }
+
+
+    .user-sidebar {
+
+        display: none;
+    }
+
+
+    .dashboard-main {
+
+        padding: 15px;
+    }
+
+
+    .user-hero {
+
+        height: auto;
+
+        grid-template-columns: 1fr;
+
+        padding: 30px 25px;
+    }
+
+
+    .hero-visual {
+
+        min-height: 250px;
+
+        margin-top: 20px;
+    }
+
+
+    .user-stat-grid {
+
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+
+    .community-content-grid,
+    .dashboard-bottom-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .dashboard-main {
+
+        padding: 12px;
+    }
+
+
+    .dashboard-topbar {
+
+        margin-bottom: 13px;
+    }
+
+
+    .user-hero {
+
+        padding: 27px 20px;
+
+        border-radius: 21px;
+    }
+
+
+    .hero-content h1 {
+
+        font-size: 35px;
+    }
+
+
+    .hero-description {
+
+        font-size: 13px;
+    }
+
+
+    .hero-buttons {
+
+        flex-direction: column;
+    }
+
+
+    .hero-primary-btn,
+    .hero-secondary-btn {
+
+        width: 100%;
+    }
+
+
+    .hero-visual {
+
+        transform: scale(0.82);
+
+        margin:
+            -5px 0 -15px;
+    }
+
+
+    .user-stat-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+}
+
+/* =========================================================
+   FINAL FULL-WIDTH HOME PAGE FIX
+========================================================= */
+
+.user-dashboard {
+    width: 100%;
+    min-width: 100%;
+}
+
+.dashboard-layout {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+
+    display: grid;
+    grid-template-columns: 250px minmax(0, 1fr);
+}
+
+/* Keep sidebar and main content connected */
+.user-sidebar {
+    width: 100%;
+    min-width: 0;
+}
+
+.dashboard-main {
+    width: 100%;
+    min-width: 0;
+}
+
+/* Remove unnecessary outer limitation */
+.dashboard-main {
+    padding-left: 28px;
+    padding-right: 28px;
+}
+
+</style>
+
+{% endblock %}
