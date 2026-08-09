@@ -1,0 +1,1 @@
+print("Hello, Community Discussion Platform!")
