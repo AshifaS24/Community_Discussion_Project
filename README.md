@@ -34,7 +34,7 @@ The platform integrates community discussion features with AI-powered functional
 - Bootstrap
 - JavaScript
 - Google Gemini API
-- Discourse API
+
 
 ## Project Structure
 
